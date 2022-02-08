@@ -11,8 +11,8 @@
  *  @date   December 03, 2018
  **/
 
-#ifndef OBSERVATIONS_H
-#define OBSERVATIONS_H 
+#ifndef INEKF_OBSERVATIONS_H
+#define INEKF_OBSERVATIONS_H 
 #include <Eigen/Dense>
 #include <iostream>
 #include <vector>
@@ -40,7 +40,16 @@ class Observation {
 class Kinematics {
     public:
         EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-        Kinematics(int id_in, Eigen::Matrix4d pose_in, Eigen::Matrix<double,6,6> covariance_in) : id(id_in), pose(pose_in), covariance(covariance_in) { }
+        Kinematics(const int id_in, const Eigen::Matrix4d& pose_in, 
+                   const Eigen::Matrix<double,6,6>& covariance_in) 
+            : id(id_in), pose(pose_in), covariance(covariance_in) { }
+        Kinematics(const int id_in, const Eigen::Matrix3d& rotation_in, 
+                   const Eigen::Vector3d& position_in, 
+                   const Eigen::Matrix<double,6,6>& covariance_in) 
+            : id(id_in), pose(Eigen::Matrix4d::Identity()), covariance(covariance_in) {
+                pose.template block<3,3>(0,0) = rotation_in;
+                pose.template block<3,1>(0,3) = position_in;
+            }
 
         int id;
         Eigen::Matrix4d pose;
@@ -51,7 +60,9 @@ class Kinematics {
 class Landmark {
     public:
         EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-        Landmark(int id_in, Eigen::Vector3d position_in, Eigen::Matrix3d covariance_in) : id(id_in), position(position_in), covariance(covariance_in) { }
+        Landmark(const int id_in, const Eigen::Vector3d& position_in, 
+                 const Eigen::Matrix3d& covariance_in) 
+            : id(id_in), position(position_in), covariance(covariance_in) { }
 
         int id;
         Eigen::Vector3d position;

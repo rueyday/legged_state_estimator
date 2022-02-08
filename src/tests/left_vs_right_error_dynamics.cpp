@@ -99,7 +99,7 @@ int main() {
     Adj.block(0,0,LI_state.dimP()-LI_state.dimTheta(),LI_state.dimP()-LI_state.dimTheta()) = Adjoint_SEK3(LI_state.getX()); 
     cout << "Difference between right invariant covariance (left is mapped using adjoint): \n" << (RI_state.getP() - (Adj * LI_state.getP() * Adj.transpose()).eval()).norm() << endl << endl;
     Eigen::MatrixXd AdjInv = Eigen::MatrixXd::Identity(RI_state.dimP(),RI_state.dimP());
-    AdjInv.block(0,0,RI_state.dimP()-RI_state.dimTheta(),RI_state.dimP()-RI_state.dimTheta()) = Adjoint_SEK3(RI_state.Xinv()); 
+    AdjInv.block(0,0,RI_state.dimP()-RI_state.dimTheta(),RI_state.dimP()-RI_state.dimTheta()) = Adjoint_SEK3(RI_state.calcXinv()); 
     cout << "Difference between left invariant covariance (right is mapped using adjoint inverse): \n" << (LI_state.getP() - (AdjInv * RI_state.getP() * AdjInv.transpose()).eval()).norm() << endl << endl;
     cout << "Difference between state estimates: \n" << (LI_state.getX() - RI_state.getX()).norm() << endl << endl;
 
@@ -140,7 +140,7 @@ int main() {
     Adj.block(0,0,LI_state.dimP()-LI_state.dimTheta(),LI_state.dimP()-LI_state.dimTheta()) = Adjoint_SEK3(LI_state.getX()); 
     cout << "Difference between right invariant covariance (left is mapped using adjoint): \n" << (RI_state.getP() - (Adj * LI_state.getP() * Adj.transpose()).eval()).norm() << endl << endl;
     AdjInv = Eigen::MatrixXd::Identity(RI_state.dimP(),RI_state.dimP());
-    AdjInv.block(0,0,RI_state.dimP()-RI_state.dimTheta(),RI_state.dimP()-RI_state.dimTheta()) = Adjoint_SEK3(RI_state.Xinv()); 
+    AdjInv.block(0,0,RI_state.dimP()-RI_state.dimTheta(),RI_state.dimP()-RI_state.dimTheta()) = Adjoint_SEK3(RI_state.calcXinv()); 
     cout << "Difference between left invariant covariance (right is mapped using adjoint inverse): \n" << (LI_state.getP() - (AdjInv * RI_state.getP() * AdjInv.transpose()).eval()).norm() << endl << endl;
     cout << "Difference between state estimates: \n" << (LI_state.getX() - RI_state.getX()).norm() << endl << endl;
 

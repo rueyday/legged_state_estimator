@@ -11,8 +11,8 @@
  *  @date   September 25, 2018
  **/
 
-#ifndef ROBOTSTATE_H
-#define ROBOTSTATE_H 
+#ifndef INEKF_ROBOTSTATE_H
+#define INEKF_ROBOTSTATE_H 
 #include <Eigen/Dense>
 #include <iostream>
 
@@ -70,10 +70,10 @@ class RobotState {
         void setPositionCovariance(const Eigen::Matrix3d& cov);
         void setGyroscopeBiasCovariance(const Eigen::Matrix3d& cov);
         void setAccelerometerBiasCovariance(const Eigen::Matrix3d& cov);
-        void copyDiagX(int n, Eigen::MatrixXd& BigX) const;
-        void copyDiagXinv(int n, Eigen::MatrixXd& BigXinv) const;
+        void copyDiagX(const int n, Eigen::MatrixXd& BigX) const;
+        void copyDiagXinv(const int n, Eigen::MatrixXd& BigXinv) const;
 
-        const Eigen::MatrixXd Xinv() const;
+        Eigen::MatrixXd calcXinv() const;
 
         friend std::ostream& operator<<(std::ostream& os, const RobotState& s);  
 

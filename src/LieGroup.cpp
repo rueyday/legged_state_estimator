@@ -17,31 +17,30 @@ namespace inekf {
 
 using namespace std;
 
-const double TOLERANCE = 1e-10;
-
-long int factorial(int n) {
+long int factorial(const int n) {
   return (n == 1 || n == 0) ? 1 : factorial(n - 1) * n;
 }
 
 Eigen::Matrix3d skew(const Eigen::Vector3d& v) {
     // Convert vector to skew-symmetric matrix
     Eigen::Matrix3d M = Eigen::Matrix3d::Zero();
-    M << 0, -v[2], v[1],
-         v[2], 0, -v[0], 
-        -v[1], v[0], 0;
-        return M;
+    M <<    0, -v[2],  v[1],
+         v[2],     0, -v[0], 
+        -v[1],  v[0],     0;
+    return M;
 }
 
-Eigen::Matrix3d Gamma_SO3(const Eigen::Vector3d& w, int m) {
+Eigen::Matrix3d Gamma_SO3(const Eigen::Vector3d& w, const int m, 
+                          const double exp_map_tol) {
     // Computes mth integral of the exponential map: \Gamma_m = \sum_{n=0}^{\infty} \dfrac{1}{(n+m)!} (w^\wedge)^n
     assert(m>=0);
-    Eigen::Matrix3d I = Eigen::Matrix3d::Identity();
-    double theta = w.norm();
-    if (theta < TOLERANCE) {
+    const Eigen::Matrix3d I = Eigen::Matrix3d::Identity();
+    const double theta = w.norm();
+    if (theta < exp_map_tol) {
         return (1.0/factorial(m))*I; // TODO: There is a better small value approximation for exp() given in Trawny p.19
     } 
-    Eigen::Matrix3d A = skew(w);
-    double theta2 =  theta*theta;
+    const Eigen::Matrix3d A = skew(w);
+    const double theta2 =  theta*theta;
 
     // Closed form solution for the first 3 cases
     switch (m) {
@@ -59,7 +58,7 @@ Eigen::Matrix3d Gamma_SO3(const Eigen::Vector3d& w, int m) {
             return 0.5*I + (theta-sin(theta))/(theta2*theta)*A + (theta2 + 2*cos(theta)-2)/(2*theta2*theta2)*A*A;
 
         default: // General case 
-            Eigen::Matrix3d R = I + (sin(theta)/theta)*A + ((1-cos(theta))/theta2)*A*A;
+            const Eigen::Matrix3d R = I + (sin(theta)/theta)*A + ((1-cos(theta))/theta2)*A*A;
             Eigen::Matrix3d S = I;
             Eigen::Matrix3d Ak = I;
             long int kfactorial = 1;
@@ -94,44 +93,45 @@ Eigen::Matrix3d RightJacobian_SO3(const Eigen::Vector3d& w) {
     return Gamma_SO3(-w, 1);
 }
 
-Eigen::MatrixXd Exp_SEK3(const Eigen::VectorXd& v) {
+Eigen::MatrixXd Exp_SEK3(const Eigen::VectorXd& v,  const double exp_map_tol) {
     // Computes the vectorized exponential map for SE_K(3)
-    int K = (v.size()-3)/3;
+    const int K = (v.size()-3)/3;
     Eigen::MatrixXd X = Eigen::MatrixXd::Identity(3+K,3+K);
     Eigen::Matrix3d R;
     Eigen::Matrix3d Jl;
-    Eigen::Vector3d w = v.head(3);
+    const auto& w = v.head(3);
     double theta = w.norm();
     Eigen::Matrix3d I = Eigen::Matrix3d::Identity();
-    if (theta < TOLERANCE) {
+    if (theta < exp_map_tol) {
         R = I;
         Jl = I;
     } else {
-        Eigen::Matrix3d A = skew(w);
-        double theta2 = theta*theta;
-        double stheta = sin(theta);
-        double ctheta = cos(theta);
-        double oneMinusCosTheta2 = (1-ctheta)/(theta2);
-        Eigen::Matrix3d A2 = A*A;
-        R =  I + (stheta/theta)*A + oneMinusCosTheta2*A2;
-        Jl = I + oneMinusCosTheta2*A + ((theta-stheta)/(theta2*theta))*A2;
+        const Eigen::Matrix3d A = skew(w);
+        const double theta2 = theta*theta;
+        const double stheta = sin(theta);
+        const double ctheta = cos(theta);
+        const double oneMinusCosTheta2 = (1-ctheta)/(theta2);
+        const Eigen::Matrix3d A2 = A*A;
+        R.noalias() =  I + (stheta/theta) * A + oneMinusCosTheta2 * A2;
+        Jl.noalias() = I + oneMinusCosTheta2*A 
+                         + ((theta-stheta)/(theta2*theta)) * A2;
     }
     X.block<3,3>(0,0) = R;
     for (int i=0; i<K; ++i) {
-        X.block<3,1>(0,3+i) = Jl * v.segment<3>(3+3*i);
+        X.block<3,1>(0,3+i).noalias() = Jl * v.segment<3>(3+3*i);
     }
     return X;
 }
 
 Eigen::MatrixXd Adjoint_SEK3(const Eigen::MatrixXd& X) {
     // Compute Adjoint(X) for X in SE_K(3)
-    int K = X.cols()-3;
+    const int K = X.cols()-3;
     Eigen::MatrixXd Adj = Eigen::MatrixXd::Zero(3+3*K, 3+3*K);
-    Eigen::Matrix3d R = X.block<3,3>(0,0);
+    const auto& R = X.block<3,3>(0,0);
     Adj.block<3,3>(0,0) = R;
     for (int i=0; i<K; ++i) {
         Adj.block<3,3>(3+3*i,3+3*i) = R;
-        Adj.block<3,3>(3+3*i,0) = skew(X.block<3,1>(0,3+i))*R;
+        Adj.block<3,3>(3+3*i,0).noalias() = skew(X.block<3,1>(0,3+i)) * R;
     }
     return Adj;
 }

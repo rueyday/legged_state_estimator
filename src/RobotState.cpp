@@ -64,7 +64,7 @@ const Eigen::MatrixXd RobotState::getWorldX() const {
     if (state_type_ == StateType::WorldCentric) {
         return this->getX();
     } else {
-        return this->Xinv();
+        return this->calcXinv();
     }
 }
 const Eigen::Matrix3d RobotState::getWorldRotation() const {
@@ -93,7 +93,7 @@ const Eigen::MatrixXd RobotState::getBodyX() const {
     if (state_type_ == StateType::BodyCentric) {
         return this->getX();
     } else {
-        return this->Xinv();
+        return this->calcXinv();
     }
 }
 
@@ -136,38 +136,38 @@ void RobotState::setPositionCovariance(const Eigen::Matrix3d& cov) { P_.block<3,
 void RobotState::setGyroscopeBiasCovariance(const Eigen::Matrix3d& cov) { P_.block<3,3>(P_.rows()-6,P_.rows()-6) = cov; }
 void RobotState::setAccelerometerBiasCovariance(const Eigen::Matrix3d& cov) { P_.block<3,3>(P_.rows()-3,P_.rows()-3) = cov; }
 
-void RobotState::copyDiagX(int n, Eigen::MatrixXd& BigX) const {
+void RobotState::copyDiagX(const int n, Eigen::MatrixXd& BigX) const {
     const int dimX = this->dimX();
     for(int i=0; i<n; ++i) {
         const int startIndex = BigX.rows();
         BigX.conservativeResize(startIndex+dimX, startIndex+dimX);
-        BigX.block(startIndex,0,dimX,startIndex) = Eigen::MatrixXd::Zero(dimX,startIndex);
-        BigX.block(0,startIndex,startIndex,dimX) = Eigen::MatrixXd::Zero(startIndex,dimX);
+        BigX.block(startIndex,0,dimX,startIndex).setZero();
+        BigX.block(0,startIndex,startIndex,dimX).setZero();
         BigX.block(startIndex,startIndex,dimX,dimX) = X_;
     }
     return;
 }
 
-void RobotState::copyDiagXinv(int n, Eigen::MatrixXd& BigXinv) const {
+void RobotState::copyDiagXinv(const int n, Eigen::MatrixXd& BigXinv) const {
     const int dimX = this->dimX();
-    Eigen::MatrixXd Xinv = this->Xinv();
+    Eigen::MatrixXd Xinv = this->calcXinv();
     for(int i=0; i<n; ++i) {
         int startIndex = BigXinv.rows();
         BigXinv.conservativeResize(startIndex + dimX, startIndex + dimX);
-        BigXinv.block(startIndex,0,dimX,startIndex) = Eigen::MatrixXd::Zero(dimX,startIndex);
-        BigXinv.block(0,startIndex,startIndex,dimX) = Eigen::MatrixXd::Zero(startIndex,dimX);
+        BigXinv.block(startIndex,0,dimX,startIndex).setZero();
+        BigXinv.block(0,startIndex,startIndex,dimX).setZero();
         BigXinv.block(startIndex,startIndex,dimX,dimX) = Xinv;
     }
     return;
 }
 
-const Eigen::MatrixXd RobotState::Xinv() const {
+Eigen::MatrixXd RobotState::calcXinv() const {
     const int dimX = this->dimX();
     Eigen::MatrixXd Xinv = Eigen::MatrixXd::Identity(dimX,dimX);
     const auto& RT = X_.block<3,3>(0,0).transpose();
     Xinv.block<3,3>(0,0) = RT;
     for(int i=3; i<dimX; ++i) {
-        Xinv.block<3,1>(0,i) = -RT*X_.block<3,1>(0,i);
+        Xinv.block<3,1>(0,i).noalias() = -RT * X_.block<3,1>(0,i);
     }
     return Xinv;
 }

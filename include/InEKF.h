@@ -11,8 +11,8 @@
  *  @date   September 25, 2018
  **/
 
-#ifndef INEKF_H
-#define INEKF_H 
+#ifndef INEKF_INEKF_H
+#define INEKF_INEKF_H 
 #include <Eigen/Dense>
 #include <Eigen/LU>
 #include <unsupported/Eigen/MatrixFunctions>
