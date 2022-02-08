@@ -14,6 +14,7 @@
 #ifndef INEKF_H
 #define INEKF_H 
 #include <Eigen/Dense>
+#include <Eigen/LU>
 #include <unsupported/Eigen/MatrixFunctions>
 #include <iostream>
 #include <vector>
@@ -29,7 +30,6 @@ namespace inekf {
 enum ErrorType {LeftInvariant, RightInvariant};
 
 class InEKF {
-    
     public:
         EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
@@ -46,26 +46,26 @@ class InEKF {
 the default (identity rotation, zero velocity, zero position).
          * @param params: The noise parameters to be assigned.
          */
-        InEKF(NoiseParams params);
+        InEKF(const NoiseParams& params);
         /**
          * Initialize filter with state. Initializes the noise par            gfc = [
 the default.
          * @param state: The state to be assigned.
          */
-        InEKF(RobotState state);
+        InEKF(const RobotState& state);
         /**
          * Initialize filter with state and noise parameters.
          * @param state: The state to be assigned.
          * @param params: The noise parameters to be assigned.
          */        
-        InEKF(RobotState state, NoiseParams params);
+        InEKF(const RobotState& state, const NoiseParams& params);
         /**
          * Initialize filter with state, noise, and error type.
          * @param state: The state to be assigned.
          * @param params: The noise parameters to be assigned.
          * @param error_type: The type of invariant error to be used (affects covariance).
          */       
-        InEKF(RobotState state, NoiseParams params, ErrorType error_type);
+        InEKF(const RobotState& state, const NoiseParams& params, ErrorType error_type);
     /// @}
 
     
@@ -78,37 +78,37 @@ the default.
         /**
          * Gets the current state estimate.
          */
-        RobotState getState() const;
+        const RobotState& getState() const;
         /**
          * Gets the current noise parameters.
          */
-        NoiseParams getNoiseParams() const;
+        const NoiseParams& getNoiseParams() const;
         /**
          * Gets the filter's current contact states.
          * @return  map of contact ID and bool that indicates if contact is registed
          */
-        std::map<int,bool> getContacts() const;
+        const std::map<int, bool>& getContacts() const;
         /**
          * Gets the current estimated contact positions.
          * @return  map of contact ID and associated index in the state matrix X
          */
-        std::map<int,int> getEstimatedContactPositions() const;
+        const std::map<int, int>& getEstimatedContactPositions() const;
 
         /**
          * Gets the filter's prior landmarks.
          * @return  map of prior landmark ID and position (as a Eigen::Vector3d)
          */
-        mapIntVector3d getPriorLandmarks() const;
+        const mapIntVector3d& getPriorLandmarks() const;
         /**
          * Gets the filter's estimated landmarks.
          * @return  map of landmark ID and associated index in the state matrix X
          */
-        std::map<int,int> getEstimatedLandmarks() const;
+        const std::map<int, int>& getEstimatedLandmarks() const;
         /**
          * Gets the filter's set magnetic field.
          * @return  magnetic field in world frame
          */
-        Eigen::Vector3d getMagneticField() const;
+        const Eigen::Vector3d& getMagneticField() const;
     /// @}
 
 
@@ -118,24 +118,24 @@ the default.
          * Sets the current state estimate
          * @param state: The state estimate to be assigned.
          */
-        void setState(RobotState state);
+        void setState(const RobotState& state);
         /**
          * Sets the current noise parameters
          * @param params: The noise parameters to be assigned.
          */
-        void setNoiseParams(NoiseParams params);
+        void setNoiseParams(const NoiseParams& params);
         /**
          * Sets the filter's current contact state.
          * @param contacts: A vector of contact ID and indicator pairs. A true indicator means contact is detected.
          */
-        void setContacts(std::vector<std::pair<int,bool> > contacts);
+        void setContacts(std::vector<std::pair<int,bool>>& contacts);
         /**
          * Sets the filter's prior landmarks.
          * @param prior_landmarks: A map of prior landmark IDs and associated position in the world frame.
          */
         void setPriorLandmarks(const mapIntVector3d& prior_landmarks);
         /** TODO: Sets magnetic field for untested magnetometer measurement */
-        void setMagneticField(Eigen::Vector3d& true_magnetic_field);
+        void setMagneticField(const Eigen::Vector3d& true_magnetic_field);
     /// @}
 
 
@@ -155,7 +155,7 @@ the default.
          * Removes a set of landmarks from the filter's prior landmark set.
          * @param landmark_ids: A vector of IDs for the landmarks to remove.
          */
-        void RemovePriorLandmarks(const std::vector<int> landmark_ids);
+        void RemovePriorLandmarks(const std::vector<int>& landmark_ids);
         /**
          * Removes a single landmark from the filter's estimated landmark set.
          * @param landmark_id: The ID for the landmark to remove.
@@ -165,12 +165,12 @@ the default.
          * Removes a set of landmarks from the filter's estimated landmark set.
          * @param landmark_ids: A vector of IDs for the landmarks to remove.
          */
-        void RemoveLandmarks(const std::vector<int> landmark_ids);
+        void RemoveLandmarks(const std::vector<int>& landmark_ids);
         /**
          * Keeps a set of landmarks from the filter's estimated landmark set.
          * @param landmark_ids: A vector of IDs for the landmarks to keep.
          */
-        void KeepLandmarks(const std::vector<int> landmark_ids);
+        void KeepLandmarks(const std::vector<int>& landmark_ids);
     /// @}
 
 
@@ -224,9 +224,10 @@ the default.
         mapIntVector3d prior_landmarks_;
         std::map<int,int> estimated_landmarks_;
         Eigen::Vector3d magnetic_field_;
+        Eigen::LDLT<Eigen::MatrixXd> ldlt_;
 
-        Eigen::MatrixXd StateTransitionMatrix(Eigen::Vector3d& w, Eigen::Vector3d& a, double dt);
-        Eigen::MatrixXd DiscreteNoiseMatrix(Eigen::MatrixXd& Phi, double dt);
+        Eigen::MatrixXd StateTransitionMatrix(const Eigen::Vector3d& w, const Eigen::Vector3d& a, double dt);
+        Eigen::MatrixXd DiscreteNoiseMatrix(const Eigen::MatrixXd& Phi, double dt);
 
         // Corrects state using invariant observation models
         void CorrectRightInvariant(const Observation& obs);

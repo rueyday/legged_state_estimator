@@ -36,26 +36,26 @@ RobotState::RobotState(const Eigen::MatrixXd& X, const Eigen::VectorXd& Theta, c
     X_(X), Theta_(Theta), P_(P) {}
 // TODO: error checking to make sure dimensions are correct and supported
 
-const Eigen::MatrixXd RobotState::getX() const { return X_; }
-const Eigen::VectorXd RobotState::getTheta() const { return Theta_; }
-const Eigen::MatrixXd RobotState::getP() const { return P_; }
-const Eigen::Matrix3d RobotState::getRotation() const { return X_.block<3,3>(0,0); }
-const Eigen::Vector3d RobotState::getVelocity() const { return X_.block<3,1>(0,3); }
-const Eigen::Vector3d RobotState::getPosition() const { return X_.block<3,1>(0,4); }
-const Eigen::Vector3d RobotState::getVector(int index) const { return X_.block<3,1>(0,index); }
+const Eigen::MatrixXd& RobotState::getX() const { return X_; }
+const Eigen::VectorXd& RobotState::getTheta() const { return Theta_; }
+const Eigen::MatrixXd& RobotState::getP() const { return P_; }
+const Eigen::Block<const Eigen::MatrixXd, 3, 3> RobotState::getRotation() const { return X_.template block<3,3>(0,0); }
+const Eigen::Block<const Eigen::MatrixXd, 3, 1> RobotState::getVelocity() const { return X_.template block<3,1>(0,3); }
+const Eigen::Block<const Eigen::MatrixXd, 3, 1> RobotState::getPosition() const { return X_.template block<3,1>(0,4); }
+const Eigen::Block<const Eigen::MatrixXd, 3, 1> RobotState::getVector(int index) const { return X_.template block<3,1>(0,index); }
 
-const Eigen::Vector3d RobotState::getGyroscopeBias() const { return Theta_.head(3); }
-const Eigen::Vector3d RobotState::getAccelerometerBias() const { return Theta_.tail(3); }
+const Eigen::VectorBlock<const Eigen::VectorXd, 3> RobotState::getGyroscopeBias() const { return Theta_.template head<3>(); }
+const Eigen::VectorBlock<const Eigen::VectorXd, 3> RobotState::getAccelerometerBias() const { return Theta_.template tail<3>(3); }
 
-const Eigen::Matrix3d RobotState::getRotationCovariance() const { return P_.block<3,3>(0,0); }
-const Eigen::Matrix3d RobotState::getVelocityCovariance() const { return P_.block<3,3>(3,3); }
-const Eigen::Matrix3d RobotState::getPositionCovariance() const { return P_.block<3,3>(6,6); }
-const Eigen::Matrix3d RobotState::getGyroscopeBiasCovariance() const { return P_.block<3,3>(P_.rows()-6,P_.rows()-6); }
-const Eigen::Matrix3d RobotState::getAccelerometerBiasCovariance() const { return P_.block<3,3>(P_.rows()-3,P_.rows()-3); }
+const Eigen::Block<const Eigen::MatrixXd, 3, 3> RobotState::getRotationCovariance() const { return P_.template block<3,3>(0,0); }
+const Eigen::Block<const Eigen::MatrixXd, 3, 3> RobotState::getVelocityCovariance() const { return P_.template block<3,3>(3,3); }
+const Eigen::Block<const Eigen::MatrixXd, 3, 3> RobotState::getPositionCovariance() const { return P_.template block<3,3>(6,6); }
+const Eigen::Block<const Eigen::MatrixXd, 3, 3> RobotState::getGyroscopeBiasCovariance() const { return P_.template block<3,3>(P_.rows()-6,P_.rows()-6); }
+const Eigen::Block<const Eigen::MatrixXd, 3, 3> RobotState::getAccelerometerBiasCovariance() const { return P_.template block<3,3>(P_.rows()-3,P_.rows()-3); }
 
-const int RobotState::dimX() const { return X_.cols(); }
-const int RobotState::dimTheta() const {return Theta_.rows();}
-const int RobotState::dimP() const { return P_.cols(); }
+int RobotState::dimX() const { return X_.cols(); }
+int RobotState::dimTheta() const {return Theta_.rows();}
+int RobotState::dimP() const { return P_.cols(); }
 
 
 const StateType RobotState::getStateType() const { return state_type_; }
@@ -137,10 +137,10 @@ void RobotState::setGyroscopeBiasCovariance(const Eigen::Matrix3d& cov) { P_.blo
 void RobotState::setAccelerometerBiasCovariance(const Eigen::Matrix3d& cov) { P_.block<3,3>(P_.rows()-3,P_.rows()-3) = cov; }
 
 void RobotState::copyDiagX(int n, Eigen::MatrixXd& BigX) const {
-    int dimX = this->dimX();
+    const int dimX = this->dimX();
     for(int i=0; i<n; ++i) {
-        int startIndex = BigX.rows();
-        BigX.conservativeResize(startIndex + dimX, startIndex + dimX);
+        const int startIndex = BigX.rows();
+        BigX.conservativeResize(startIndex+dimX, startIndex+dimX);
         BigX.block(startIndex,0,dimX,startIndex) = Eigen::MatrixXd::Zero(dimX,startIndex);
         BigX.block(0,startIndex,startIndex,dimX) = Eigen::MatrixXd::Zero(startIndex,dimX);
         BigX.block(startIndex,startIndex,dimX,dimX) = X_;
@@ -149,7 +149,7 @@ void RobotState::copyDiagX(int n, Eigen::MatrixXd& BigX) const {
 }
 
 void RobotState::copyDiagXinv(int n, Eigen::MatrixXd& BigXinv) const {
-    int dimX = this->dimX();
+    const int dimX = this->dimX();
     Eigen::MatrixXd Xinv = this->Xinv();
     for(int i=0; i<n; ++i) {
         int startIndex = BigXinv.rows();
@@ -162,9 +162,9 @@ void RobotState::copyDiagXinv(int n, Eigen::MatrixXd& BigXinv) const {
 }
 
 const Eigen::MatrixXd RobotState::Xinv() const {
-    int dimX = this->dimX();
+    const int dimX = this->dimX();
     Eigen::MatrixXd Xinv = Eigen::MatrixXd::Identity(dimX,dimX);
-    Eigen::Matrix3d RT = X_.block<3,3>(0,0).transpose();
+    const auto& RT = X_.block<3,3>(0,0).transpose();
     Xinv.block<3,3>(0,0) = RT;
     for(int i=3; i<dimX; ++i) {
         Xinv.block<3,1>(0,i) = -RT*X_.block<3,1>(0,i);
