@@ -19,7 +19,7 @@
 #include <Eigen/Dense>
 #include <boost/algorithm/string.hpp>
 #include <vector>
-#include "InEKF.h"
+#include "inekf/InEKF.h"
 
 #define DT_MIN 1e-6
 #define DT_MAX 1
@@ -71,7 +71,7 @@ int main() {
     cout << filter.getState() << endl;
 
     // Open data file
-    ifstream infile("../src/data/imu_kinematic_measurements.txt");
+    ifstream infile("../data/imu_kinematic_measurements.txt");
     string line;
     Eigen::Matrix<double,6,1> imu_measurement = Eigen::Matrix<double,6,1>::Zero();
     Eigen::Matrix<double,6,1> imu_measurement_prev = Eigen::Matrix<double,6,1>::Zero();

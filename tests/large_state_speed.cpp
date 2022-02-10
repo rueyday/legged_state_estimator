@@ -14,7 +14,7 @@
 #include <iostream>
 #include <chrono>
 #include <Eigen/Dense>
-#include "InEKF.h"
+#include "inekf/InEKF.h"
 
 #define DT_MIN 1e-6
 #define DT_MAX 1

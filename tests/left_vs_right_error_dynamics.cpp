@@ -20,7 +20,7 @@
 #include <vector>
 #include <random>
 #include <chrono>
-#include "InEKF.h"
+#include "inekf/InEKF.h"
 
 using namespace std;
 using namespace inekf;

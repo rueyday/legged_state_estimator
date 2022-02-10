@@ -20,10 +20,10 @@
 #include <vector>
 #include <map>
 #include <algorithm>
-#include "RobotState.h"
-#include "NoiseParams.h"
-#include "LieGroup.h"
-#include "Observations.h"
+#include "inekf/RobotState.h"
+#include "inekf/NoiseParams.h"
+#include "inekf/LieGroup.h"
+#include "inekf/Observations.h"
 
 namespace inekf {
 

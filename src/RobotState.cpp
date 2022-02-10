@@ -11,8 +11,8 @@
  *  @date   September 25, 2018
  **/
 
-#include "RobotState.h"
-#include "LieGroup.h"
+#include "inekf/RobotState.h"
+#include "inekf/LieGroup.h"
 
 namespace inekf {
 
