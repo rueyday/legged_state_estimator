@@ -47,9 +47,17 @@ class Kinematics {
                    const Eigen::Vector3d& position_in, 
                    const Eigen::Matrix<double,6,6>& covariance_in) 
             : id(id_in), pose(Eigen::Matrix4d::Identity()), covariance(covariance_in) {
-                pose.template block<3,3>(0,0) = rotation_in;
-                pose.template block<3,1>(0,3) = position_in;
-            }
+                setContactRotation(rotation_in);
+                setContactPosition(position_in);
+        }
+
+        void setContactPosition(const Eigen::Vector3d& position_in) {
+            pose.template block<3,1>(0,3) = position_in;
+        }
+
+        void setContactRotation(const Eigen::Matrix3d& rotation_in) {
+            pose.template block<3,3>(0,0) = rotation_in;
+        }
 
         int id;
         Eigen::Matrix4d pose;

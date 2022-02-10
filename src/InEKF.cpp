@@ -89,13 +89,13 @@ const map<int,int>& InEKF::getEstimatedLandmarks() const { return estimated_land
 const map<int,int>& InEKF::getEstimatedContactPositions() const { return estimated_contact_positions_; }
 
 // Set the filter's contact state
-void InEKF::setContacts(vector<pair<int,bool>>& contacts) {
+void InEKF::setContacts(const vector<pair<int,bool>>& contacts) {
     // Insert new measured contact states
-    for (vector<pair<int, bool>>::iterator it=contacts.begin(); it!=contacts.end(); ++it) {
-        pair<map<int,bool>::iterator,bool> ret = contacts_.insert(*it);
+    for (const auto& e : contacts) {
+        pair<map<int,bool>::iterator,bool> ret = contacts_.insert(e);
         // If contact is already in the map, replace with new value
         if (ret.second==false) {
-            ret.first->second = it->second;
+            ret.first->second = e.second;
         }
     }
     return;

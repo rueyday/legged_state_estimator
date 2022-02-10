@@ -128,7 +128,7 @@ the default.
          * Sets the filter's current contact state.
          * @param contacts: A vector of contact ID and indicator pairs. A true indicator means contact is detected.
          */
-        void setContacts(std::vector<std::pair<int,bool>>& contacts);
+        void setContacts(const std::vector<std::pair<int,bool>>& contacts);
         /**
          * Sets the filter's prior landmarks.
          * @param prior_landmarks: A map of prior landmark IDs and associated position in the world frame.
