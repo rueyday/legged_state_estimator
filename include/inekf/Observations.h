@@ -59,6 +59,10 @@ class Kinematics {
             pose.template block<3,3>(0,0) = rotation_in;
         }
 
+        void setContactPositionCovariance(const Eigen::Matrix3d& covariance_in) {
+            covariance.template bottomRightCorner<3,3>() = covariance_in;
+        }
+
         int id;
         Eigen::Matrix4d pose;
         Eigen::Matrix<double,6,6> covariance;
