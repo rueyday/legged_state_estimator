@@ -20,7 +20,9 @@ A ROS wrapper for the filter is available at [https://github.com/RossHartley/inv
 ### Requirements
 * CMake 2.8.3 or later
 * g++ 5.4.0 or later
-* [Eigen3 C++ Library](http://eigen.tuxfamily.org/index.php?title=Main_Page)
+* [Eigen3](http://eigen.tuxfamily.org/index.php?title=Main_Page) 
+* [Pinocchio](https://github.com/stack-of-tasks/pinocchio)
+
 
 ### Installation Using CMake
 ```
@@ -36,8 +38,10 @@ include_directories(${inekf_INCLUDE_DIRS})
 ```
 
 ## Examples
-1. A landmark-aided inertial navigation example is provided at `src/examples/landmarks.cpp`
-2. A contact-aided inertial navigation example is provided at `src/examples/kinematics.cpp`
+1. A landmark-aided inertial navigation example is provided at `examples/landmarks.cpp`
+2. A contact-aided inertial navigation example is provided at `examples/kinematics.cpp`
+3. State estimation of a quadruped robot for whole-body MPC is provided at `examples_python/a1_mpc.py`. ([Pybullet](https://pybullet.org/) and [robotoc](https://github.com/mayataka/robotoc) are required):
+
 
 ## Citations
 The contact-aided invariant extended Kalman filter is described in: 
@@ -65,5 +69,19 @@ The core theory of invariant extended Kalman filtering is presented in:
   pages={1797--1812},
   year={2017},
   publisher={IEEE}
+}
+```
+
+The contact state is estimated via robot dynamics and rogistic regressions, which is presented in: 
+* M. Camurri et al., "Probabilistic Contact Estimation and Impact Detection for State Estimation of Quadruped Robots," in IEEE Robotics and Automation Letters, vol. 2, no. 2, pp. 1023-1030, April 2017.
+```
+@article{Camurri2017ContactEstimation,  
+  author={Camurri, Marco and Fallon, Maurice and Bazeille, Stéphane and Radulescu, Andreea and Barasuol, Victor and Caldwell, Darwin G. and Semini, Claudio},  
+  journal={IEEE Robotics and Automation Letters},   
+  title={Probabilistic Contact Estimation and Impact Detection for State Estimation of Quadruped Robots},   
+  year={2017},  
+  volume={2},  
+  number={2},  
+  pages={1023-1030}
 }
 ```
