@@ -26,6 +26,7 @@ A ROS wrapper for the filter is available at [https://github.com/RossHartley/inv
 
 ### Installation Using CMake
 ```
+git submodule update --init --recursive
 mkdir build
 cd build 
 cmake .. 
