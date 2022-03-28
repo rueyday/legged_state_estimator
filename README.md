@@ -78,7 +78,7 @@ The core theory of invariant extended Kalman filtering is presented in:
 }
 ```
 
-The contact state is estimated via robot dynamics and rogistic regressions, which is presented in: 
+The contact state is estimated via robot dynamics and logistic regressions, which is presented in: 
 * M. Camurri et al., "Probabilistic Contact Estimation and Impact Detection for State Estimation of Quadruped Robots," in IEEE Robotics and Automation Letters, vol. 2, no. 2, pp. 1023-1030, April 2017.
 ```
 @article{Camurri2017ContactEstimation,  

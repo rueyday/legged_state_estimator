@@ -48,7 +48,7 @@ latex/
 
 # Ohters
 .vscode/
-__pycache__/
+# __pycache__/
 *.mp4
 *.log
 *.pdf
