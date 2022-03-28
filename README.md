@@ -43,6 +43,11 @@ include_directories(${inekf_INCLUDE_DIRS})
 3. State estimation of a quadruped robot for whole-body MPC is provided at `examples_python/a1_mpc.py`. ([Pybullet](https://pybullet.org/) and [robotoc](https://github.com/mayataka/robotoc) are required):
 
 
+https://user-images.githubusercontent.com/33686357/160392898-99252d68-7848-4ea6-b750-e6ea47b3734b.mp4
+
+
+
+
 ## Citations
 The contact-aided invariant extended Kalman filter is described in: 
 * R. Hartley, M. G. Jadidi, J. Grizzle, and R. M. Eustice, “Contact-aided invariant extended kalman filtering for legged robot state estimation,” in Proceedings of Robotics: Science and Systems, Pittsburgh, Pennsylvania, June 2018.
