@@ -18,7 +18,7 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <Eigen/Dense>
 #include <boost/algorithm/string.hpp>
-#include "inekf/InEKF.h"
+#include "inekf/inekf.hpp"
 
 #define DT_MIN 1e-6
 #define DT_MAX 1

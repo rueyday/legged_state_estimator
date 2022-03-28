@@ -19,7 +19,7 @@
 #include <Eigen/Dense>
 #include<Eigen/StdVector>
 #include <boost/algorithm/string.hpp>
-#include "inekf/InEKF.h"
+#include "inekf/inekf.hpp"
 
 #define DT_MIN 1e-6
 #define DT_MAX 1

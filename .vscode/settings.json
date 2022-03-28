@@ -47,6 +47,22 @@
         "ratio": "cpp",
         "thread": "cpp",
         "cinttypes": "cpp",
-        "typeindex": "cpp"
+        "typeindex": "cpp",
+        "cstdarg": "cpp",
+        "bitset": "cpp",
+        "condition_variable": "cpp",
+        "algorithm": "cpp",
+        "iterator": "cpp",
+        "memory_resource": "cpp",
+        "optional": "cpp",
+        "random": "cpp",
+        "set": "cpp",
+        "string": "cpp",
+        "string_view": "cpp",
+        "iomanip": "cpp",
+        "mutex": "cpp",
+        "cfenv": "cpp",
+        "variant": "cpp",
+        "bit": "cpp"
     }
 }

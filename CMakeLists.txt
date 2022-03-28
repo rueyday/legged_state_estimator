@@ -1,28 +1,34 @@
-# Specify the minimum version for CMake
 cmake_minimum_required(VERSION 2.8.3)
-# Project's name
 project(inekf)
 
 set(CMAKE_CXX_STANDARD 11)
 
+
+################
+## Build type ##
+################
 if (NOT CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE STREQUAL "")
     set(CMAKE_BUILD_TYPE "Release" CACHE STRING "" FORCE)
 endif()
-option(OPTIMIZE_FOR_NATIVE "Enable -march=native" ON)
-
 if(NOT CMAKE_BUILD_TYPE MATCHES Release)
   message(STATUS "WARNING: CMAKE_BUILD_TYPE is NOT set to Release, which can decrease performance significantly.")
 endif()
+
+
+#############
+## Options ##
+#############
+option(OPTIMIZE_FOR_NATIVE "Enable -march=native" ON)
+option(BUILD_PYTHON_INTERFACE "Build Python bindings" ON)
+option(BUILD_EXAMPLES "Build examples and tests" ON)
+
+
+###########
+## Build ##
+###########
 set(CMAKE_INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib)
-# Threading
-find_package(Threads)
-# Boost
-find_package(Boost REQUIRED COMPONENTS system)
-message("Boost_INCLUDE_DIR: " ${Boost_INCLUDE_DIR})
-# Eigen 
 find_package(Eigen3 REQUIRED)
-message("EIGEN3_INCLUDE_DIR: " ${EIGEN3_INCLUDE_DIR})
-# build 
+find_package(pinocchio REQUIRED)
 file(GLOB_RECURSE ${PROJECT_NAME}_SOURCES src/*.cpp)
 file(GLOB_RECURSE ${PROJECT_NAME}_HEADERS include/${PROJECT_NAME}/*.h*)
 add_library(
@@ -34,13 +40,13 @@ add_library(
 target_link_libraries(
   ${PROJECT_NAME} 
   PUBLIC
-  ${Boost_LIBRARIES}
+  ${PINOCCHIO_LIBRARIES}
 )
 target_include_directories(
   ${PROJECT_NAME} 
   PUBLIC
-  ${Boost_INCLUDE_DIRS}
   ${EIGEN3_INCLUDE_DIR}
+  ${PINOCCHIO_INCLUDE_DIRS}
   $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
@@ -52,9 +58,21 @@ if (OPTIMIZE_FOR_NATIVE)
   )
 endif()
 
+
+##############
+## Bindings ##
+##############
+if (BUILD_PYTHON_INTERFACE)
+  add_subdirectory(bindings/python)
+endif()
+
+
 ######################
 #  Add Execuatables  #
 ######################
+find_package(Threads)
+find_package(Boost REQUIRED COMPONENTS system)
+
 macro(inekf_add_test EXACUTABLE)
   add_executable(
     ${EXACUTABLE} 
@@ -64,18 +82,22 @@ macro(inekf_add_test EXACUTABLE)
     ${EXACUTABLE} 
     PRIVATE
     ${PROJECT_NAME} 
+    ${Boost_LIBRARIES}
   )
   target_include_directories(
     ${EXACUTABLE} 
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
+    ${Boost_INCLUDE_DIRS}
   )
 endmacro()
 
-inekf_add_test(propagation_speed)
-inekf_add_test(correction_speed)
-inekf_add_test(large_state_speed)
-inekf_add_test(left_vs_right_error_dynamics)
+if (BUILD_EXAMPLES)
+  inekf_add_test(propagation_speed)
+  inekf_add_test(correction_speed)
+  inekf_add_test(large_state_speed)
+  inekf_add_test(left_vs_right_error_dynamics)
+endif()
 
 macro(inekf_add_example EXACUTABLE)
   add_executable(
@@ -86,16 +108,20 @@ macro(inekf_add_example EXACUTABLE)
     ${EXACUTABLE} 
     PRIVATE
     ${PROJECT_NAME} 
+    ${Boost_LIBRARIES}
   )
   target_include_directories(
     ${EXACUTABLE} 
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
+    ${Boost_INCLUDE_DIRS}
   )
 endmacro()
 
-inekf_add_example(landmarks)
-inekf_add_example(kinematics)
+if (BUILD_EXAMPLES)
+  inekf_add_example(landmarks)
+  inekf_add_example(kinematics)
+endif()
 
 
 #############
