@@ -39,16 +39,16 @@ public:
   RobotModel(const std::string& path_to_urdf, const int imu_frame, 
              const std::vector<int>& contact_frames);
 
-  // ///
-  // /// @brief Constructs a robot model. Builds the Pinocchio robot model and data 
-  // /// from URDF. 
-  // /// @param[in] path_to_urdf Path to the URDF file.
-  // /// @param[in] imu_frames Name of the IMU frame.
-  // /// @param[in] contact_frames Collection of the names of frames that can have 
-  // /// contacts with the environments. 
-  // ///
-  // RobotModel(const std::string& path_to_urdf, const std::string& imu_frame, 
-  //            const std::vector<std::string>& contact_frames);
+  ///
+  /// @brief Constructs a robot model. Builds the Pinocchio robot model and data 
+  /// from URDF. 
+  /// @param[in] path_to_urdf Path to the URDF file.
+  /// @param[in] imu_frames Name of the IMU frame.
+  /// @param[in] contact_frames Collection of the names of frames that can have 
+  /// contacts with the environments. 
+  ///
+  RobotModel(const std::string& path_to_urdf, const std::string& imu_frame, 
+             const std::vector<std::string>& contact_frames);
 
   ///
   /// @brief Constructs a robot model from the Pinocchio robot model.
@@ -60,14 +60,14 @@ public:
   RobotModel(const pinocchio::Model& pin_model, const int imu_frame, 
              const std::vector<int>& contact_frames);
 
-  // ///
-  // /// @brief Constructs a robot model from the Pinocchio robot model.
-  // /// @param[in] pin_model Pinocchio robot model.
-  // /// @param[in] imu_frames Name of the IMU frame.
-  // /// @param[in] contact_frames Collection of the names of frames that can have 
-  // /// contacts with the environments. 
-  // ///
-  // RobotModel(const pinocchio::Model& pin_model, const std::string& imu_frame, 
+  ///
+  /// @brief Constructs a robot model from the Pinocchio robot model.
+  /// @param[in] pin_model Pinocchio robot model.
+  /// @param[in] imu_frames Name of the IMU frame.
+  /// @param[in] contact_frames Collection of the names of frames that can have 
+  /// contacts with the environments. 
+  ///
+  RobotModel(const pinocchio::Model& pin_model, const std::string& imu_frame, 
              const std::vector<std::string>& contact_frames);
 
   ///
