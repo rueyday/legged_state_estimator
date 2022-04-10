@@ -13,9 +13,10 @@
 
 #ifndef INEKF_LIEGROUP_HPP_
 #define INEKF_LIEGROUP_HPP_
-#include <Eigen/Dense>
 #include <iostream>
 #include <cmath>
+
+#include "Eigen/Core"
 
 namespace inekf {
 

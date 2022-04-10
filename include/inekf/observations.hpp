@@ -14,10 +14,11 @@
 #ifndef INEKF_OBSERVATIONS_HPP_
 #define INEKF_OBSERVATIONS_HPP_
 
-#include <Eigen/Dense>
 #include <iostream>
 #include <vector>
 #include <map>
+
+#include "Eigen/Core"
 
 #include "inekf/macros.hpp"
 

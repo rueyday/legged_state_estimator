@@ -14,13 +14,14 @@
 #ifndef INEKF_INEKF_HPP_
 #define INEKF_INEKF_HPP_
 
-#include <Eigen/Dense>
-#include <Eigen/LU>
-#include <unsupported/Eigen/MatrixFunctions>
 #include <iostream>
 #include <vector>
 #include <map>
 #include <algorithm>
+
+#include "Eigen/Core"
+#include "Eigen/LU"
+#include "unsupported/Eigen/MatrixFunctions"
 
 #include "inekf/robot_state.hpp"
 #include "inekf/noise_params.hpp"

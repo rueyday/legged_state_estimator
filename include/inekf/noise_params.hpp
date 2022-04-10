@@ -13,8 +13,9 @@
 #ifndef INEKF_NOISEPARAMS_HPP_
 #define INEKF_NOISEPARAMS_HPP_
 
-#include <Eigen/Dense>
 #include <iostream>
+
+#include "Eigen/Core"
 
 #include "inekf/macros.hpp"
 

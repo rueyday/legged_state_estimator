@@ -3,19 +3,39 @@
 
 namespace inekf {
 
+pinocchio::Model RobotModel::buildFloatingBaseModel(
+    const std::string& path_to_urdf) {
+  pinocchio::Model pin_model;
+  pinocchio::urdf::buildModel(path_to_urdf, 
+                              pinocchio::JointModelFreeFlyer(), pin_model);
+  return pin_model;
+}
+
+
 RobotModel::RobotModel(const std::string& path_to_urdf, const int imu_frame,
+                       const std::vector<int>& contact_frames) 
+  : RobotModel(buildFloatingBaseModel(path_to_urdf), imu_frame, contact_frames) {
+}
+
+
+RobotModel::RobotModel(const std::string& path_to_urdf, 
+                       const std::string& imu_frame,
+                       const std::vector<std::string>& contact_frames) 
+  : RobotModel(buildFloatingBaseModel(path_to_urdf), imu_frame, contact_frames) {
+}
+
+
+RobotModel::RobotModel(const pinocchio::Model& pin_model, const int imu_frame,
                        const std::vector<int>& contact_frames) 
   : contact_frames_(contact_frames),
     imu_frame_(imu_frame),
-    model_(),
+    model_(pin_model),
     data_(),
     q_(),
     v_(),
     a_(),
     tau_(),
     jac_6d_() {
-  pinocchio::urdf::buildModel(path_to_urdf, 
-                              pinocchio::JointModelFreeFlyer(), model_);
   data_ = pinocchio::Data(model_);
   q_   = Eigen::VectorXd(model_.nq);
   v_   = Eigen::VectorXd(model_.nv);
@@ -27,19 +47,18 @@ RobotModel::RobotModel(const std::string& path_to_urdf, const int imu_frame,
 }
 
 
-RobotModel::RobotModel(const std::string& path_to_urdf, const std::string& imu_frame,
-             const std::vector<std::string>& contact_frames) 
+RobotModel::RobotModel(const pinocchio::Model& pin_model,   
+                       const std::string& imu_frame,
+                       const std::vector<std::string>& contact_frames) 
   : contact_frames_(),
     imu_frame_(),
-    model_(),
+    model_(pin_model),
     data_(),
     q_(),
     v_(),
     a_(),
     tau_(),
     jac_6d_() {
-  pinocchio::urdf::buildModel(path_to_urdf, 
-                              pinocchio::JointModelFreeFlyer(), model_);
   data_ = pinocchio::Data(model_);
   q_   = Eigen::VectorXd(model_.nq);
   v_   = Eigen::VectorXd(model_.nv);
