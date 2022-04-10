@@ -32,24 +32,24 @@ public:
   INEKF_USE_DEFAULT_MOVE_CONSTRUCTOR(NoiseParams);
   INEKF_USE_DEFAULT_MOVE_ASSIGN_OPERATOR(NoiseParams);
 
-  void setGyroscopeNoise(const double std);
-  void setGyroscopeNoise(const Eigen::Vector3d& std);
+  void setGyroscopeNoise(const double stddev);
+  void setGyroscopeNoise(const Eigen::Vector3d& stddev);
   void setGyroscopeNoise(const Eigen::Matrix3d& cov);
 
-  void setAccelerometerNoise(const double std);
-  void setAccelerometerNoise(const Eigen::Vector3d& std);
+  void setAccelerometerNoise(const double stddev);
+  void setAccelerometerNoise(const Eigen::Vector3d& stddev);
   void setAccelerometerNoise(const Eigen::Matrix3d& cov);  
 
-  void setGyroscopeBiasNoise(const double std);
-  void setGyroscopeBiasNoise(const Eigen::Vector3d& std);
+  void setGyroscopeBiasNoise(const double stddev);
+  void setGyroscopeBiasNoise(const Eigen::Vector3d& stddev);
   void setGyroscopeBiasNoise(const Eigen::Matrix3d& cov);
 
-  void setAccelerometerBiasNoise(const double std);
-  void setAccelerometerBiasNoise(const Eigen::Vector3d& std);
+  void setAccelerometerBiasNoise(const double stddev);
+  void setAccelerometerBiasNoise(const Eigen::Vector3d& stddev);
   void setAccelerometerBiasNoise(const Eigen::Matrix3d& cov);  
 
-  void setContactNoise(const double std);
-  void setContactNoise(const Eigen::Vector3d& std);
+  void setContactNoise(const double stddev);
+  void setContactNoise(const Eigen::Vector3d& stddev);
   void setContactNoise(const Eigen::Matrix3d& cov);
 
   const Eigen::Matrix3d& getGyroscopeCov() const;
