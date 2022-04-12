@@ -84,7 +84,9 @@ void StateEstimator::update(const Eigen::Vector3d& imu_gyro_raw,
   // Process IMU measurements in InEKF
   imu_raw_.template head<3>() = imu_gyro_raw;
   imu_raw_.template tail<3>() = imu_lin_accel_raw;
+  printf("before propagate\n");
   inekf_.Propagate(imu_raw_, dt_);
+  printf("after propagate\n");
   // Process IMU measurements in LPFs
   imu_gyro_raw_world_.noalias() = getBaseRotationEstimate() * (imu_gyro_raw - getIMUGyroBiasEstimate());
   imu_gyro_accel_world_.noalias() = (imu_gyro_raw_world_ - imu_gyro_raw_world_prev_) / dt_;
@@ -100,9 +102,13 @@ void StateEstimator::update(const Eigen::Vector3d& imu_gyro_raw,
   lpf_ddqJ_.update(ddqJ);
   lpf_tauJ_.update(tauJ);
   // Update contact info
+  printf("updateLegKinematics\n");
   robot_model_.updateLegKinematics(qJ);
+  printf("updateLegDynamics\n");
   robot_model_.updateLegDynamics(qJ, dqJ);
+  printf("contactEst\n");
   contact_estimator_.update(robot_model_, lpf_tauJ_.getEstimate(), f_raw);
+  printf("setContactEst\n");
   inekf_.setContacts(contact_estimator_.getContactState());
   const double contact_force_cov = contact_estimator_.getContactForceCovariance();
   for (int i=0; i<robot_model_.numContacts(); ++i) {

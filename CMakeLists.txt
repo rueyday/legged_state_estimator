@@ -53,7 +53,7 @@ target_include_directories(
 if (OPTIMIZE_FOR_NATIVE)
   target_compile_options(
     ${PROJECT_NAME} 
-    PUBLIC
+    PRIVATE
     -march=native
   )
 endif()

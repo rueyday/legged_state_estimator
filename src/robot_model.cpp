@@ -208,29 +208,29 @@ const Eigen::Matrix3d& RobotModel::getBaseRotation() const {
 
 
 const Eigen::Vector3d& RobotModel::getContactPosition(const int contact_id) const {
-  assert(contat_id >= 0);
-  assert(contat_id < contact_frames_.size());
+  assert(contact_id >= 0);
+  assert(contact_id < contact_frames_.size());
   return data_.oMf[contact_frames_[contact_id]].translation();
 }
 
 
 const Eigen::Matrix3d& RobotModel::getContactRotation(const int contact_id) const {
-  assert(contat_id >= 0);
-  assert(contat_id < contact_frames_.size());
+  assert(contact_id >= 0);
+  assert(contact_id < contact_frames_.size());
   return data_.oMf[contact_frames_[contact_id]].rotation();
 }
 
 
 const Eigen::Block<const Eigen::MatrixXd> RobotModel::getContactJacobian(const int contact_id) const {
-  assert(contat_id >= 0);
-  assert(contat_id < contact_frames_.size());
+  assert(contact_id >= 0);
+  assert(contact_id < contact_frames_.size());
   return jac_6d_[contact_id].topRows(3);
 }
 
 
 const Eigen::Block<const Eigen::MatrixXd> RobotModel::getJointContactJacobian(const int contact_id) const {
-  assert(contat_id >= 0);
-  assert(contat_id < contact_frames_.size());
+  assert(contact_id >= 0);
+  assert(contact_id < contact_frames_.size());
   return jac_6d_[contact_id].topRightCorner(3, nJ());
 }
 
