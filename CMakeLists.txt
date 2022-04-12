@@ -1,7 +1,13 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(inekf)
 
-set(CMAKE_CXX_STANDARD 11)
+if (NOT "${CMAKE_CXX_STANDARD}")
+  set(CMAKE_CXX_STANDARD 11)
+else()
+  if ("${CMAKE_CXX_STANDARD}" LESS 11)
+    set(CMAKE_CXX_STANDARD 11)
+  endif()
+endif()
 
 
 ################
