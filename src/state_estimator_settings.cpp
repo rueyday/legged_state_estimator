@@ -8,7 +8,7 @@ StateEstimatorSettings StateEstimatorSettings::UnitreeA1(
   StateEstimatorSettings settings;
   settings.path_to_urdf = path_to_urdf;
   settings.imu_frame = 46;
-  settings.contact_frames = {14, 24, 34, 44};
+  settings.contact_frames = {14, 24, 34, 44}; // LF, RF, LH, RH
 
   settings.contact_estimator_settings.beta0 = {-20.0, -20.0, -20.0, -20.0};
   settings.contact_estimator_settings.beta1 = {0.7, 0.7, 0.7, 0.7};
