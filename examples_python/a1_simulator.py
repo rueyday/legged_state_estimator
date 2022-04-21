@@ -3,7 +3,6 @@ import pybullet_data
 import numpy as np
 import time
 from scipy.spatial.transform import Rotation
-from sqlalchemy import true
 
 
 # imu_gyro_noise: 0.01 

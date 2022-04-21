@@ -16,8 +16,24 @@ PYBIND11_MODULE(state_estimator, m) {
     .def(py::init<const StateEstimatorSettings&>(),
           py::arg("state_estimator_settings"))
     .def(py::init<>())
-    .def("init", &StateEstimator::init,
+    .def("init", static_cast<void (StateEstimator::*)(const Eigen::Vector3d&, 
+                                                      const Eigen::Vector4d&,
+                                                      const Eigen::Vector3d&,
+                                                      const Eigen::Vector3d&,
+                                                      const Eigen::Vector3d&)>(&StateEstimator::init),
           py::arg("base_pos"), py::arg("base_quat"), 
+          py::arg("base_lin_vel_world")=Eigen::Vector3d::Zero(), 
+          py::arg("imu_gyro_bias")=Eigen::Vector3d::Zero(), 
+          py::arg("imu_lin_accel_bias")=Eigen::Vector3d::Zero())
+    .def("init", static_cast<void (StateEstimator::*)(const Eigen::Vector3d&, 
+                                                      const Eigen::Vector4d&,
+                                                      const Eigen::VectorXd&,
+                                                      const double,
+                                                      const Eigen::Vector3d&,
+                                                      const Eigen::Vector3d&,
+                                                      const Eigen::Vector3d&)>(&StateEstimator::init),
+          py::arg("base_pos"), py::arg("base_quat"), 
+          py::arg("qJ"), py::arg("ground_height")=0.0, 
           py::arg("base_lin_vel_world")=Eigen::Vector3d::Zero(), 
           py::arg("imu_gyro_bias")=Eigen::Vector3d::Zero(), 
           py::arg("imu_lin_accel_bias")=Eigen::Vector3d::Zero())

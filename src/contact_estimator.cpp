@@ -140,14 +140,14 @@ const std::vector<Eigen::Vector3d>& ContactEstimator::getContactSurfaceNormal() 
 
 void ContactEstimator::setContactSurfaceNormal(
     const std::vector<Eigen::Vector3d>& contact_surface_normal) {
-  assert(contact_surface_normal_.size() == contact_surface_normal);
+  assert(contact_surface_normal_.size() == contact_surface_normal.size());
   contact_surface_normal_ = contact_surface_normal;
 }
 
 
 void ContactEstimator::setForceSensorBias(
     const std::vector<double>& force_sensor_bias) {
-  assert(settings_.force_sensor_bias.size() == force_sensor_bias);
+  assert(settings_.force_sensor_bias.size() == force_sensor_bias.size());
   settings_.force_sensor_bias = force_sensor_bias;
 }
 

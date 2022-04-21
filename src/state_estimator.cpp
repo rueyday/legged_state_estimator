@@ -74,6 +74,28 @@ void StateEstimator::init(const Eigen::Vector3d& base_pos,
 }
 
 
+void StateEstimator::init(const Eigen::Vector3d& base_pos,
+                          const Eigen::Vector4d& base_quat,
+                          const Eigen::VectorXd& qJ, 
+                          const double ground_height,
+                          const Eigen::Vector3d& base_lin_vel_world,
+                          const Eigen::Vector3d& imu_gyro_bias,
+                          const Eigen::Vector3d& imu_lin_accel_bias) {
+  robot_model_.updateKinematics(Eigen::Vector3d::Zero(), base_quat, qJ);
+  double base_height = 0;
+  for (int i=0; i<robot_model_.numContacts(); ++i) {
+    base_height += (robot_model_.getBasePosition().coeff(2)
+                      - robot_model_.getContactPosition(i).coeff(2)
+                      + ground_height);
+  }
+  base_height /= robot_model_.numContacts();
+  const Eigen::Vector3d base_pos_correct 
+      = {base_pos.coeff(0), base_pos.coeff(1), base_height};
+  init(base_pos_correct, base_quat, base_lin_vel_world, 
+       imu_gyro_bias, imu_lin_accel_bias);
+}
+
+
 void StateEstimator::update(const Eigen::Vector3d& imu_gyro_raw, 
                             const Eigen::Vector3d& imu_lin_accel_raw, 
                             const Eigen::VectorXd& qJ, 

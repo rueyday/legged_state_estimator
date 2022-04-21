@@ -59,6 +59,25 @@ public:
             const Eigen::Vector3d& imu_lin_accel_bias=Eigen::Vector3d::Zero());
 
   ///
+  /// @brief Initializes the state estimator.
+  /// @param[in] base_pos Base position. 
+  /// @param[in] base_quat Base orientation expressed by quaternion (x, y, z, w). 
+  /// @param[in] qJ Raw measurement of the joint positions. 
+  /// @param[in] ground_height Ground height. 
+  /// @param[in] base_lin_vel_world Base linear velocity expressed in the world
+  /// coordinate. Default is Eigen::Vector3d::Zero().
+  /// @param[in] imu_gyro_bias Initial guess of the IMU gyro bias. Default is 
+  /// Eigen::Vector3d::Zero().
+  /// @param[in] imu_lin_accel_bias Initial guess of the IMU linear acceleration 
+  /// bias. Default is Eigen::Vector3d::Zero().
+  ///
+  void init(const Eigen::Vector3d& base_pos, const Eigen::Vector4d& base_quat,
+            const Eigen::VectorXd& qJ, const double ground_height=0,
+            const Eigen::Vector3d& base_lin_vel_world=Eigen::Vector3d::Zero(),
+            const Eigen::Vector3d& imu_gyro_bias=Eigen::Vector3d::Zero(),
+            const Eigen::Vector3d& imu_lin_accel_bias=Eigen::Vector3d::Zero());
+
+  ///
   /// @brief Updates the state estimation.
   /// @param[in] imu_gyro_raw Raw measurement of the base angular velocity 
   /// expressed in the body local coordinate from IMU gyro sensor.
