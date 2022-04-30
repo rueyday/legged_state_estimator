@@ -41,8 +41,8 @@ base_pos, base_quat, base_lin_vel_world, base_ang_vel_world = sim.get_base_state
 estimator.init(base_pos=base_pos, base_quat=base_quat, base_lin_vel_world=base_lin_vel_world,
                imu_gyro_bias=np.zeros(3), imu_lin_accel_bias=np.zeros(3))
 robot = mpc_factory.create_robot()
-mpc, planner = mpc_factory.create_mpc_trotting()
-# mpc, planner = mpc_factory.create_mpc_jumping()
+# mpc, planner = mpc_factory.create_mpc_trotting()
+mpc, planner = mpc_factory.create_mpc_jumping()
 # mpc.get_config_cost_handle().set_dvi_weight(np.full(18, 1.0))
 # for e in mpc.get_swing_foot_cost_handle():
 #     e.set_x3d_weight(np.full(3, 1.0e05))
@@ -126,9 +126,9 @@ for i in range(30000):
     sim.step_simulation()
     # estimate state
     imu_gyro_raw, imu_lin_acc_raw = sim.get_imu_state()
-    qJ, dqJ, ddqJ, tauJ = sim.get_joint_state()
+    qJ, dqJ, tauJ = sim.get_joint_state()
     estimator.update(imu_gyro_raw=imu_gyro_raw, imu_lin_accel_raw=imu_lin_acc_raw, 
-                     qJ=qJ, dqJ=dqJ, ddqJ=ddqJ, tauJ=tauJ, f=[0, 0, 0, 0])
+                     qJ=qJ, dqJ=dqJ, tauJ=tauJ)
     base_pos_est.append(estimator.base_position_estimate.copy())
     base_quat_est.append(estimator.base_quaternion_estimate.copy())
     base_lin_vel_est.append(estimator.base_linear_velocity_estimate_local.copy())
@@ -144,7 +144,7 @@ for i in range(30000):
     # print('contact probability: ', estimator.contact_probability)
     # print('contact force estimation: ', estimator.contact_force_estimate)
 
-    # qJ, dqJ, ddqJ, tauJ = sim.get_joint_state(noise=False)
+    # qJ, dqJ, tauJ = sim.get_joint_state(noise=False)
     # MPC control update
     q = np.concatenate([estimator.base_position_estimate.copy(), 
                         estimator.base_quaternion_estimate.copy(), 

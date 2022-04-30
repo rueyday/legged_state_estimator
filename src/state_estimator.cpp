@@ -100,6 +100,40 @@ void StateEstimator::update(const Eigen::Vector3d& imu_gyro_raw,
                             const Eigen::Vector3d& imu_lin_accel_raw, 
                             const Eigen::VectorXd& qJ, 
                             const Eigen::VectorXd& dqJ, 
+                            const Eigen::VectorXd& tauJ, 
+                            const std::vector<double>& f_raw) {
+  // Process IMU measurements in InEKF
+  imu_raw_.template head<3>() = imu_gyro_raw;
+  imu_raw_.template tail<3>() = imu_lin_accel_raw;
+  inekf_.Propagate(imu_raw_, dt_);
+  // Process IMU measurements in LPFs
+  imu_lin_accel_raw_world_.noalias() = getBaseRotationEstimate() * (imu_lin_accel_raw - getIMULinearAccelerationBiasEstimate());
+  lpf_lin_accel_world_.update(imu_lin_accel_raw_world_);
+  imu_lin_accel_local_.noalias()
+      = getBaseRotationEstimate().transpose() * lpf_lin_accel_world_.getEstimate();
+  lpf_dqJ_.update(dqJ);
+  lpf_tauJ_.update(tauJ);
+  // Update contact info
+  robot_model_.updateLegKinematics(qJ);
+  robot_model_.updateLegDynamics(qJ, dqJ);
+  contact_estimator_.update(robot_model_, lpf_tauJ_.getEstimate(), f_raw);
+  inekf_.setContacts(contact_estimator_.getContactState());
+  const double contact_force_cov = contact_estimator_.getContactForceCovariance();
+  for (int i=0; i<robot_model_.numContacts(); ++i) {
+    leg_kinematics_[i].setContactPosition(
+        robot_model_.getContactPosition(i)-robot_model_.getBasePosition());
+    leg_kinematics_[i].setContactPositionCovariance(
+        contact_force_cov*Eigen::Matrix3d::Identity());
+  }
+  // Process kinematics measurements in InEKF
+  inekf_.CorrectKinematics(leg_kinematics_);
+}
+
+
+void StateEstimator::update(const Eigen::Vector3d& imu_gyro_raw, 
+                            const Eigen::Vector3d& imu_lin_accel_raw, 
+                            const Eigen::VectorXd& qJ, 
+                            const Eigen::VectorXd& dqJ, 
                             const Eigen::VectorXd& ddqJ, 
                             const Eigen::VectorXd& tauJ, 
                             const std::vector<double>& f_raw) {

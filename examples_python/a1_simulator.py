@@ -45,7 +45,6 @@ class A1Simulator:
                                 0.0,  0.67, -1.3, 
                                 0.0,  0.67, -1.3, 
                                 0.0,  0.67, -1.3])
-        self.dqJ_prev = np.zeros(12)
         self.torque_control_mode = False
         self.tauJ = np.zeros(12)
 
@@ -180,18 +179,14 @@ class A1Simulator:
         tauJ[11] = pybullet.getJointState(self.robot, 15)[3] 
         if self.torque_control_mode:
             tauJ = self.tauJ.copy()
-        ddqJ = (dqJ - self.dqJ_prev) / self.time_step
-        self.dqJ_prev = dqJ.copy()
         if noise:
             qJ_noise = np.random.normal(0, self.qJ_noise, 12) 
             dqJ_noise = np.random.normal(0, self.dqJ_noise, 12) 
-            ddqJ_noise = np.random.normal(0, self.ddqJ_noise, 12) 
             tauJ_noise = np.random.normal(0, self.tauJ_noise, 12) 
             qJ = qJ + qJ_noise
             dqJ = dqJ + dqJ_noise
-            ddqJ = ddqJ + ddqJ_noise
             tauJ = tauJ + tauJ_noise
-        return qJ, dqJ, ddqJ, tauJ
+        return qJ, dqJ, tauJ
 
     def apply_torque_command(self, tauJ):
         self.torque_control_mode = True

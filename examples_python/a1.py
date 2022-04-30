@@ -104,9 +104,9 @@ for i in range(10000):
         sim.apply_position_command(qJ_cmd)
     # estimate state
     imu_gyro_raw, imu_lin_acc_raw = sim.get_imu_state()
-    qJ, dqJ, ddqJ, tauJ = sim.get_joint_state()
+    qJ, dqJ, tauJ = sim.get_joint_state()
     estimator.update(imu_gyro_raw=imu_gyro_raw, imu_lin_accel_raw=imu_lin_acc_raw, 
-                     qJ=qJ, dqJ=dqJ, ddqJ=ddqJ, tauJ=tauJ, f=[0, 0, 0, 0])
+                     qJ=qJ, dqJ=dqJ, tauJ=tauJ)
     base_pos_est.append(estimator.base_position_estimate.copy())
     base_quat_est.append(estimator.base_quaternion_estimate.copy())
     base_lin_vel_est.append(estimator.base_linear_velocity_estimate_local.copy())

@@ -37,10 +37,25 @@ PYBIND11_MODULE(state_estimator, m) {
           py::arg("base_lin_vel_world")=Eigen::Vector3d::Zero(), 
           py::arg("imu_gyro_bias")=Eigen::Vector3d::Zero(), 
           py::arg("imu_lin_accel_bias")=Eigen::Vector3d::Zero())
-    .def("update", &StateEstimator::update,
+    .def("update", static_cast<void (StateEstimator::*)(const Eigen::Vector3d&, 
+                                                        const Eigen::Vector3d&,
+                                                        const Eigen::VectorXd&,
+                                                        const Eigen::VectorXd&,
+                                                        const Eigen::VectorXd&,
+                                                        const std::vector<double>&)>(&StateEstimator::update),
           py::arg("imu_gyro_raw"), py::arg("imu_lin_accel_raw"), 
-          py::arg("qJ"), py::arg("dqJ"), py::arg("ddqJ"), py::arg("tauJ"), 
-          py::arg("f")=std::vector<double>())
+          py::arg("qJ"), py::arg("dqJ"), py::arg("tauJ"), 
+          py::arg("f_raw")=std::vector<double>())
+    .def("update", static_cast<void (StateEstimator::*)(const Eigen::Vector3d&, 
+                                                        const Eigen::Vector3d&,
+                                                        const Eigen::VectorXd&,
+                                                        const Eigen::VectorXd&,
+                                                        const Eigen::VectorXd&,
+                                                        const Eigen::VectorXd&,
+                                                        const std::vector<double>&)>(&StateEstimator::update),
+          py::arg("imu_gyro_raw"), py::arg("imu_lin_accel_raw"), 
+          py::arg("qJ"), py::arg("dqJ"), py::arg("ddqJ"), py::arg("tauJ"),
+          py::arg("f_raw")=std::vector<double>())
     .def_property_readonly("base_position_estimate", &StateEstimator::getBasePositionEstimate)
     .def_property_readonly("base_rotation_estimate", &StateEstimator::getBaseRotationEstimate)
     .def_property_readonly("base_quaternion_estimate", &StateEstimator::getBaseQuaternionEstimate)
