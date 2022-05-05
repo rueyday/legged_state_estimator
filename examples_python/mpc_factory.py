@@ -12,7 +12,7 @@ def create_robot():
     return robot
 
 
-def create_mpc_trotting():
+def create_mpc_trot():
     robot = create_robot()
     LF_foot_id, LH_foot_id, RF_foot_id, RH_foot_id = robot.contact_frames()
 
@@ -36,9 +36,9 @@ def create_mpc_trotting():
     N = 18
     max_steps = 3
     nthreads = 4
-    mpc = robotoc.MPCTrotting(robot, T, N, max_steps, nthreads)
+    mpc = robotoc.MPCTrot(robot, T, N, max_steps, nthreads)
 
-    planner = robotoc.TrottingFootStepPlanner(robot)
+    planner = robotoc.TrotFootStepPlanner(robot)
     planner.set_gait_pattern(step_length, (yaw_cmd*swing_time), (stance_time > 0.))
     mpc.set_gait_pattern(planner, swing_height, swing_time, stance_time, swing_start_time)
 
@@ -61,7 +61,51 @@ def create_mpc_trotting():
     return mpc, planner
 
 
-def create_mpc_jumping():
+def create_mpc_flying_trot():
+    robot = create_robot()
+    LF_foot_id, LH_foot_id, RF_foot_id, RH_foot_id = robot.contact_frames()
+
+    # step_length = np.array([0.15, 0, 0]) 
+    step_length = np.array([0.0, 0.0, 0.0]) 
+    yaw_cmd = np.pi / 8.
+
+    swing_height = 0.1
+    stance_time = 0.15
+    flying_time = 0.10
+    swing_start_time = 0.5
+
+    v_com_cmd = step_length / (stance_time + flying_time)
+    yaw_rate_cmd = yaw_cmd / (stance_time + flying_time)
+
+    T = 0.5
+    N = 18
+    max_steps = 3
+    nthreads = 4
+    mpc = robotoc.MPCFlyingTrot(robot, T, N, max_steps, nthreads)
+
+    planner = robotoc.FlyingTrotFootStepPlanner(robot)
+    planner.set_gait_pattern(step_length, yaw_cmd)
+    mpc.set_gait_pattern(planner, swing_height, flying_time, stance_time, swing_start_time)
+
+    q = np.array([0, 0, 0.3181, 0, 0, 0, 1, 
+                  0.0,  0.67, -1.3, 
+                  0.0,  0.67, -1.3, 
+                  0.0,  0.67, -1.3, 
+                  0.0,  0.67, -1.3])
+    v = np.zeros(robot.dimv())
+    t = 0.0
+    option_init = robotoc.SolverOptions()
+    option_init.max_iter = 10
+
+    mpc.init(t, q, v, option_init)
+    option_mpc = robotoc.SolverOptions()
+    option_mpc.max_iter = 2 # MPC iterations
+    mpc.set_solver_options(option_mpc)
+
+    return mpc, planner
+
+
+def create_mpc_jump():
     jump_type = 'longitudinal'
     # jump_type = 'lateral'
     # jump_type = 'back'
@@ -88,9 +132,9 @@ def create_mpc_jumping():
     N = 18
     max_steps = 1
     nthreads = 4
-    mpc = robotoc.MPCJumping(robot, T, N, max_steps, nthreads)
+    mpc = robotoc.MPCJump(robot, T, N, max_steps, nthreads)
 
-    planner = robotoc.JumpingFootStepPlanner(robot)
+    planner = robotoc.JumpFootStepPlanner(robot)
     planner.set_jump_pattern(jump_length, jump_yaw)
     mpc.set_jump_pattern(planner, flying_time=0.3, min_flying_time=0.2, 
                         ground_time=0.3, min_ground_time=0.2)

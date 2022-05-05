@@ -41,8 +41,9 @@ base_pos, base_quat, base_lin_vel_world, base_ang_vel_world = sim.get_base_state
 estimator.init(base_pos=base_pos, base_quat=base_quat, base_lin_vel_world=base_lin_vel_world,
                imu_gyro_bias=np.zeros(3), imu_lin_accel_bias=np.zeros(3))
 robot = mpc_factory.create_robot()
-# mpc, planner = mpc_factory.create_mpc_trotting()
-mpc, planner = mpc_factory.create_mpc_jumping()
+mpc, planner = mpc_factory.create_mpc_trot()
+# mpc, planner = mpc_factory.create_mpc_flying_trot()
+# mpc, planner = mpc_factory.create_mpc_jump()
 # mpc.get_config_cost_handle().set_dvi_weight(np.full(18, 1.0))
 # for e in mpc.get_swing_foot_cost_handle():
 #     e.set_x3d_weight(np.full(3, 1.0e05))
