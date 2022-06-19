@@ -8,6 +8,7 @@
 
 #include "Eigen/Core"
 #include "Eigen/StdVector"
+#include "Eigen/Geometry"
 
 #include "inekf/macros.hpp"
 #include "inekf/inekf.hpp"
@@ -25,6 +26,7 @@ namespace inekf {
 class StateEstimator {
 public:
   using Vector3d = Eigen::Matrix<double, 3, 1>;
+  using Vector4d = Eigen::Matrix<double, 4, 1>;
   using Vector6d = Eigen::Matrix<double, 6, 1>;
   using Matrix3d = Eigen::Matrix<double, 3, 3>;
   using Matrix6d = Eigen::Matrix<double, 6, 6>;
@@ -39,8 +41,6 @@ public:
   INEKF_USE_DEFAULT_COPY_ASSIGN_OPERATOR(StateEstimator);
   INEKF_USE_DEFAULT_MOVE_CONSTRUCTOR(StateEstimator);
   INEKF_USE_DEFAULT_MOVE_ASSIGN_OPERATOR(StateEstimator);
-
-  void resetParameters(const StateEstimatorSettings& settings);
 
   ///
   /// @brief Initializes the state estimator.
@@ -72,7 +72,8 @@ public:
   /// bias. Default is Eigen::Vector3d::Zero().
   ///
   void init(const Eigen::Vector3d& base_pos, const Eigen::Vector4d& base_quat,
-            const Eigen::VectorXd& qJ, const double ground_height=0,
+            const Eigen::VectorXd& qJ, 
+            const std::vector<double>& ground_height={0., 0., 0., 0.},
             const Eigen::Vector3d& base_lin_vel_world=Eigen::Vector3d::Zero(),
             const Eigen::Vector3d& imu_gyro_bias=Eigen::Vector3d::Zero(),
             const Eigen::Vector3d& imu_lin_accel_bias=Eigen::Vector3d::Zero());
@@ -94,7 +95,8 @@ public:
               const Eigen::VectorXd& tauJ, const std::vector<double>& f_raw={});
 
   ///
-  /// @brief Updates the state estimation.
+  /// @brief Updates the state estimation. Use the acceleraion-level dynamics in
+  /// the contact estimation.
   /// @param[in] imu_gyro_raw Raw measurement of the base angular velocity 
   /// expressed in the body local coordinate from IMU gyro sensor.
   /// @param[in] imu_lin_accel_raw Raw measurement of the base linear 
@@ -126,7 +128,7 @@ public:
   /// @return const reference to the base orientation estimate expressed by 
   /// quaternion.
   ///
-  Eigen::Vector4d getBaseQuaternionEstimate() const;
+  const Eigen::Vector4d& getBaseQuaternionEstimate() const;
 
   ///
   /// @return const reference to the base linear velocity estimate expressed in 
@@ -187,20 +189,25 @@ public:
   ///
   const std::vector<double>& getContactProbability() const;
 
+  ///
+  /// @return const reference to the state estimator settings. 
+  ///
+  const StateEstimatorSettings& getSettings() const;
+
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
 private:
+  StateEstimatorSettings settings_;
   InEKF inekf_;
   vectorKinematics leg_kinematics_;
   RobotModel robot_model_;
   ContactEstimator contact_estimator_;
-  LowPassFilter<double, Eigen::Dynamic> lpf_dqJ_, lpf_ddqJ_, lpf_tauJ_;
   LowPassFilter<double, 3> lpf_gyro_accel_world_, lpf_lin_accel_world_;
-  double dt_, contact_position_cov_, contact_rotation_cov_;
+  LowPassFilter<double, Eigen::Dynamic> lpf_dqJ_, lpf_ddqJ_, lpf_tauJ_;
   Vector3d imu_gyro_raw_world_, imu_gyro_raw_world_prev_, imu_gyro_accel_world_, 
            imu_gyro_accel_local_, imu_lin_accel_raw_world_, imu_lin_accel_local_;
   Vector6d imu_raw_;
-  Matrix3d R_;
+  Vector4d quat_;
 };
 
 } // namespace inekf

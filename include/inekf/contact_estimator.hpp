@@ -43,6 +43,8 @@ public:
 
   void reset();
 
+  // M(q) a + h (q, v) = S^T u + J^T f
+
   void update(const RobotModel& robot_model, const Eigen::VectorXd& tauJ, 
               const std::vector<double>& force_sensor_raw);
 

@@ -42,25 +42,7 @@ estimator.init(base_pos=base_pos, base_quat=base_quat, base_lin_vel_world=base_l
                imu_gyro_bias=np.zeros(3), imu_lin_accel_bias=np.zeros(3))
 robot = mpc_factory.create_robot()
 mpc, planner = mpc_factory.create_mpc_trot()
-# mpc, planner = mpc_factory.create_mpc_flying_trot()
 # mpc, planner = mpc_factory.create_mpc_jump()
-# mpc.get_config_cost_handle().set_dvi_weight(np.full(18, 1.0))
-# for e in mpc.get_swing_foot_cost_handle():
-#     e.set_x3d_weight(np.full(3, 1.0e05))
-# mpc.get_com_cost_handle().set_com_weight(np.full(3, 1.0e05))
-
-# mpc.config_cost().set_qi_weight(
-#     np.array([0, 0, 0, 1000, 1000, 1000, 
-#               0.001, 0.001, 0.001, 
-#               0.001, 0.001, 0.001,
-#               0.001, 0.001, 0.001,
-#               0.001, 0.001, 0.001]))
-
-# # mpc.LF_foot_cost().set_x3d_weight(np.full(3, 1.0e05))
-# # mpc.LH_foot_cost().set_x3d_weight(np.full(3, 1.0e05))
-# # mpc.RF_foot_cost().set_x3d_weight(np.full(3, 1.0e05))
-# # mpc.RH_foot_cost().set_x3d_weight(np.full(3, 1.0e05))
-# mpc.com_cost().set_com_weight(np.full(3, 1.0e04))
 
 base_pos_true = []
 base_quat_true = []

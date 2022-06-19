@@ -21,6 +21,8 @@ def create_mpc_trot():
     # step_length = np.array([-0.1, 0, 0]) 
     # step_length = np.array([0, 0.1, 0]) 
     # step_length = np.array([0.1, -0.1, 0]) 
+    yaw_step = 0.0
+    # yaw_step = np.pi / 6
 
     swing_height = 0.1
     swing_time = 0.25
@@ -28,9 +30,8 @@ def create_mpc_trot():
     stance_time = 0.0
     swing_start_time = 0.5
 
-    vcom_cmd = step_length / swing_time
-    yaw_cmd = 0
-    # yaw_cmd = np.pi / 6
+    vcom_cmd = 0.5 * step_length / (swing_time + stance_time)
+    yaw_rate_cmd = yaw_step / swing_time
 
     T = 0.5
     N = 18
@@ -39,7 +40,7 @@ def create_mpc_trot():
     mpc = robotoc.MPCTrot(robot, T, N, max_steps, nthreads)
 
     planner = robotoc.TrotFootStepPlanner(robot)
-    planner.set_gait_pattern(step_length, (yaw_cmd*swing_time), (stance_time > 0.))
+    planner.set_gait_pattern(step_length, yaw_step, (stance_time > 0.))
     mpc.set_gait_pattern(planner, swing_height, swing_time, stance_time, swing_start_time)
 
     q = np.array([0, 0, 0.3181, 0, 0, 0, 1, 
