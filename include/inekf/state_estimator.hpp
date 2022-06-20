@@ -95,25 +95,6 @@ public:
               const Eigen::VectorXd& tauJ, const std::vector<double>& f_raw={});
 
   ///
-  /// @brief Updates the state estimation. Use the acceleraion-level dynamics in
-  /// the contact estimation.
-  /// @param[in] imu_gyro_raw Raw measurement of the base angular velocity 
-  /// expressed in the body local coordinate from IMU gyro sensor.
-  /// @param[in] imu_lin_accel_raw Raw measurement of the base linear 
-  /// acceleration expressed in the body local coordinate from IMU accelerometer. 
-  /// @param[in] qJ Raw measurement of the joint positions. 
-  /// @param[in] dqJ Raw measurement of the joint velocities. 
-  /// @param[in] ddqJ Raw measurement of the joint accelerations. 
-  /// @param[in] tauJ Raw measurement of the joint torques. 
-  /// @param[in] f_raw Raw measurement of the foot force sensor. 
-  ///
-  void update(const Eigen::Vector3d& imu_gyro_raw, 
-              const Eigen::Vector3d& imu_lin_accel_raw, 
-              const Eigen::VectorXd& qJ, const Eigen::VectorXd& dqJ, 
-              const Eigen::VectorXd& ddqJ, const Eigen::VectorXd& tauJ, 
-              const std::vector<double>& f_raw={});
-
-  ///
   /// @return const reference to the base position estimate.
   ///
   const Eigen::Block<const Eigen::MatrixXd, 3, 1> getBasePositionEstimate() const;

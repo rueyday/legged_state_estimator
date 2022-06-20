@@ -39,6 +39,12 @@ public:
   NoiseParams noise_params;
 
   /// 
+  /// @brief Use dynamics in contact estimation. If false, equilibrium is 
+  /// used for contact estimation. Default is false.
+  ///
+  bool dynamic_contact_estimation = false;
+
+  /// 
   /// @brief Noise (covariance) on contact position. (Possibly is not used in 
   /// InEKF. Contact covariance in noise_params are more important).
   ///
