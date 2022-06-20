@@ -5,18 +5,39 @@ import time
 from scipy.spatial.transform import Rotation
 
 
+class ContactInfo(object):
+    def __init__(self, contact_name, link_id):
+        self.contact_name = contact_name
+        self.link_id = link_id
+        self.active = False
+        self.normal = np.array([0., 0., 1.])
+        self.distance = 0.0
+        self.normal_force = 0.0
+
+    def set_from_pybullet(self, contacts):
+        self.active = False
+        self.normal = np.array([0., 0., 1.])
+        self.distance = 0.0
+        self.normal_force = 0.0
+        for e in contacts:
+            link_id = e[3]
+            if link_id == self.link_id:
+                self.active = True
+                self.normal = np.array(e[7])
+                self.distance = np.array(e[8])
+                self.normal_force = np.array(e[9])
+
 # imu_gyro_noise: 0.01 
 # imu_lin_accel_noise: 0.1
 # qJ_noise: ~= 0
 # dqJ_noise: = 0.1
-# ddqJ_noise: = ?
 # tauJ_noise: = 0.1
 class A1Simulator:
     def __init__(self, path_to_urdf, time_step, 
                  imu_gyro_noise=0.01, imu_lin_accel_noise=0.1,
                  imu_gyro_bias_noise=0.00001,
                  imu_lin_accel_bias_noise=0.0001,
-                 qJ_noise=0.001, dqJ_noise=0.1, ddqJ_noise=1.0, tauJ_noise=0.1):
+                 qJ_noise=0.001, dqJ_noise=0.1, tauJ_noise=0.1):
         self.path_to_urdf = path_to_urdf
         self.time_step = time_step
         self.imu_gyro_noise = imu_gyro_noise
@@ -25,7 +46,6 @@ class A1Simulator:
         self.imu_lin_accel_bias_noise = imu_lin_accel_bias_noise
         self.qJ_noise = qJ_noise
         self.dqJ_noise = dqJ_noise
-        self.ddqJ_noise = ddqJ_noise
         self.tauJ_noise = tauJ_noise
         self.imu_gyro_bias = np.zeros(3)
         self.imu_accel_bias = np.zeros(3)
@@ -34,6 +54,7 @@ class A1Simulator:
         self.camera_yaw = 0.0
         self.camera_pitch = 0.0
         self.camera_target_pos = [0., 0., 0.]
+        self.plane = None
         self.robot = None
         self.base_lin_vel_world_prev = np.zeros(3)
         self.q = np.array([0, 0, 0.3181, 0, 0, 0, 1, 
@@ -47,6 +68,10 @@ class A1Simulator:
                                 0.0,  0.67, -1.3])
         self.torque_control_mode = False
         self.tauJ = np.zeros(12)
+        self.contact_info_LF = ContactInfo(contact_name='LF', link_id=11) 
+        self.contact_info_LH = ContactInfo(contact_name='LH', link_id=21) 
+        self.contact_info_RF = ContactInfo(contact_name='RF', link_id=6) 
+        self.contact_info_RH = ContactInfo(contact_name='RH', link_id=16) 
 
     def set_urdf(self, path_to_urdf):
         self.path_to_urdf = path_to_urdf
@@ -69,7 +94,7 @@ class A1Simulator:
         pybullet.setGravity(0, 0, -9.81)
         pybullet.setTimeStep(self.time_step)
         pybullet.setAdditionalSearchPath(pybullet_data.getDataPath())
-        plane = pybullet.loadURDF("plane.urdf")
+        self.plane = pybullet.loadURDF("plane.urdf")
         self.robot = pybullet.loadURDF(self.path_to_urdf,  
                                        useFixedBase=False, 
                                        useMaximalCoordinates=False)
@@ -81,6 +106,11 @@ class A1Simulator:
 
     def step_simulation(self):
         pybullet.stepSimulation()
+        contacts = pybullet.getContactPoints(self.robot, self.plane)
+        self.contact_info_LF.set_from_pybullet(contacts)
+        self.contact_info_LH.set_from_pybullet(contacts)
+        self.contact_info_RF.set_from_pybullet(contacts)
+        self.contact_info_RH.set_from_pybullet(contacts)
         time.sleep(self.time_step)
 
     def print_joint_info(self):

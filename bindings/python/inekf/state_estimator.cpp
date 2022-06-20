@@ -37,12 +37,7 @@ PYBIND11_MODULE(state_estimator, m) {
           py::arg("base_lin_vel_world")=Eigen::Vector3d::Zero(), 
           py::arg("imu_gyro_bias")=Eigen::Vector3d::Zero(), 
           py::arg("imu_lin_accel_bias")=Eigen::Vector3d::Zero())
-    .def("update", static_cast<void (StateEstimator::*)(const Eigen::Vector3d&, 
-                                                        const Eigen::Vector3d&,
-                                                        const Eigen::VectorXd&,
-                                                        const Eigen::VectorXd&,
-                                                        const Eigen::VectorXd&,
-                                                        const std::vector<double>&)>(&StateEstimator::update),
+    .def("update", &StateEstimator::update,
           py::arg("imu_gyro_raw"), py::arg("imu_lin_accel_raw"), 
           py::arg("qJ"), py::arg("dqJ"), py::arg("tauJ"), 
           py::arg("f_raw")=std::vector<double>())
