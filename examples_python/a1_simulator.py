@@ -13,12 +13,17 @@ class ContactInfo(object):
         self.normal = np.array([0., 0., 1.])
         self.distance = 0.0
         self.normal_force = 0.0
+        self.force = np.zeros(3)
 
-    def set_from_pybullet(self, contacts):
+    def deactivate(self):
         self.active = False
         self.normal = np.array([0., 0., 1.])
         self.distance = 0.0
         self.normal_force = 0.0
+        self.force = np.zeros(3)
+
+    def set_from_pybullet(self, contacts):
+        self.deactivate()
         for e in contacts:
             link_id = e[3]
             if link_id == self.link_id:
@@ -26,6 +31,7 @@ class ContactInfo(object):
                 self.normal = np.array(e[7])
                 self.distance = np.array(e[8])
                 self.normal_force = np.array(e[9])
+                self.force = self.normal_force * self.normal
 
 # imu_gyro_noise: 0.01 
 # imu_lin_accel_noise: 0.1

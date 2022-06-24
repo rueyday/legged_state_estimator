@@ -108,6 +108,11 @@ if PLOT:
 t = 0
 for i in range(30000):
     sim.step_simulation()
+    print('F_LF: ', sim.contact_info_LF.force)
+    print('F_LH: ', sim.contact_info_LH.force)
+    print('F_RF: ', sim.contact_info_RF.force)
+    print('F_RH: ', sim.contact_info_RH.force)
+    
     # estimate state
     imu_gyro_raw, imu_lin_acc_raw = sim.get_imu_state()
     qJ, dqJ, tauJ = sim.get_joint_state()

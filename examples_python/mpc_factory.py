@@ -35,9 +35,8 @@ def create_mpc_trot():
 
     T = 0.5
     N = 18
-    max_steps = 3
     nthreads = 4
-    mpc = robotoc.MPCTrot(robot, T, N, max_steps, nthreads)
+    mpc = robotoc.MPCTrot(robot, T, N, nthreads)
 
     planner = robotoc.TrotFootStepPlanner(robot)
     planner.set_gait_pattern(step_length, yaw_step, (stance_time > 0.))
@@ -80,9 +79,8 @@ def create_mpc_flying_trot():
 
     T = 0.5
     N = 18
-    max_steps = 3
     nthreads = 4
-    mpc = robotoc.MPCFlyingTrot(robot, T, N, max_steps, nthreads)
+    mpc = robotoc.MPCFlyingTrot(robot, T, N, nthreads)
 
     planner = robotoc.FlyingTrotFootStepPlanner(robot)
     planner.set_gait_pattern(step_length, yaw_cmd)
@@ -131,9 +129,8 @@ def create_mpc_jump():
 
     T = 0.8
     N = 18
-    max_steps = 1
     nthreads = 4
-    mpc = robotoc.MPCJump(robot, T, N, max_steps, nthreads)
+    mpc = robotoc.MPCJump(robot, T, N, nthreads)
 
     planner = robotoc.JumpFootStepPlanner(robot)
     planner.set_jump_pattern(jump_length, jump_yaw)
