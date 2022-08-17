@@ -17,8 +17,6 @@
 
 #include "Eigen/Core"
 
-#include "legged_state_estimator/macros.hpp"
-
 
 namespace legged_state_estimator {
 
@@ -26,11 +24,7 @@ class NoiseParams {
 public:
   NoiseParams();
 
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_DESTTUCTOR(NoiseParams);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_COPY_CONSTRUCTOR(NoiseParams);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_COPY_ASSIGN_OPERATOR(NoiseParams);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_MOVE_CONSTRUCTOR(NoiseParams);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_MOVE_ASSIGN_OPERATOR(NoiseParams);
+  ~NoiseParams() = default;
 
   void setGyroscopeNoise(const double stddev);
   void setGyroscopeNoise(const Eigen::Vector3d& stddev);

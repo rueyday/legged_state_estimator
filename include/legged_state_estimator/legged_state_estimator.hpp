@@ -10,7 +10,6 @@
 #include "Eigen/StdVector"
 #include "Eigen/Geometry"
 
-#include "legged_state_estimator/macros.hpp"
 #include "legged_state_estimator/inekf/inekf.hpp"
 #include "legged_state_estimator/inekf/inekf_state.hpp"
 #include "legged_state_estimator/inekf/noise_params.hpp"
@@ -36,11 +35,6 @@ public:
   LeggedStateEstimator();
 
   ~LeggedStateEstimator();
-
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_COPY_CONSTRUCTOR(LeggedStateEstimator);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_COPY_ASSIGN_OPERATOR(LeggedStateEstimator);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_MOVE_CONSTRUCTOR(LeggedStateEstimator);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_MOVE_ASSIGN_OPERATOR(LeggedStateEstimator);
 
   ///
   /// @brief Initializes the state estimator.

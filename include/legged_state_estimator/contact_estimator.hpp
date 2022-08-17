@@ -10,7 +10,6 @@
 #include "Eigen/Core"
 #include "Eigen/StdVector"
 
-#include "legged_state_estimator/macros.hpp"
 #include "legged_state_estimator/robot_model.hpp"
 
 
@@ -31,11 +30,7 @@ public:
 
   ContactEstimator();
 
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_DESTTUCTOR(ContactEstimator);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_COPY_CONSTRUCTOR(ContactEstimator);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_COPY_ASSIGN_OPERATOR(ContactEstimator);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_MOVE_CONSTRUCTOR(ContactEstimator);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_MOVE_ASSIGN_OPERATOR(ContactEstimator);
+  ~ContactEstimator() = default;
 
   void reset();
 

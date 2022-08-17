@@ -16,8 +16,6 @@
 #include "pinocchio/algorithm/frames-derivatives.hpp"
 #include "pinocchio/algorithm/rnea.hpp"
 
-#include "legged_state_estimator/macros.hpp"
-
 
 namespace legged_state_estimator {
 
@@ -71,15 +69,11 @@ public:
              const std::vector<std::string>& contact_frames);
 
   ///
-  /// @brief  //Default constructor. 
+  /// @brief Default constructor. 
   ///
   RobotModel();
 
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_DESTTUCTOR(RobotModel);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_COPY_CONSTRUCTOR(RobotModel);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_COPY_ASSIGN_OPERATOR(RobotModel);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_MOVE_CONSTRUCTOR(RobotModel);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_MOVE_ASSIGN_OPERATOR(RobotModel);
+  ~RobotModel() = default;
 
   ///
   /// @brief Updates leg kinemarics.

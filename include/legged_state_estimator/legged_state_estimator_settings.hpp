@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 
-#include "legged_state_estimator/macros.hpp"
 #include "legged_state_estimator/inekf/noise_params.hpp"
 #include "legged_state_estimator/contact_estimator.hpp"
 

@@ -7,8 +7,6 @@
 
 #include "Eigen/Core"
 
-#include "legged_state_estimator/macros.hpp"
-
 
 namespace legged_state_estimator {
 
@@ -52,11 +50,7 @@ public:
       alpha_(0.0) {
   }
 
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_DESTTUCTOR(LowPassFilter);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_COPY_CONSTRUCTOR(LowPassFilter);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_COPY_ASSIGN_OPERATOR(LowPassFilter);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_MOVE_CONSTRUCTOR(LowPassFilter);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_MOVE_ASSIGN_OPERATOR(LowPassFilter);
+  ~LowPassFilter() = default;
 
   void reset() {
     estimate_.setZero();

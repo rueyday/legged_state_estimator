@@ -18,8 +18,6 @@
 
 #include "Eigen/Core"
 
-#include "legged_state_estimator/macros.hpp"
-
 
 namespace legged_state_estimator {
 
@@ -32,11 +30,7 @@ public:
   InEKFState(const Eigen::MatrixXd& X, const Eigen::VectorXd& Theta);
   InEKFState(const Eigen::MatrixXd& X, const Eigen::VectorXd& Theta, const Eigen::MatrixXd& P);
 
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_DESTTUCTOR(InEKFState);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_COPY_CONSTRUCTOR(InEKFState);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_COPY_ASSIGN_OPERATOR(InEKFState);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_MOVE_CONSTRUCTOR(InEKFState);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_MOVE_ASSIGN_OPERATOR(InEKFState);
+  ~InEKFState() = default;
 
   const Eigen::MatrixXd& getX() const;
   const Eigen::VectorXd& getTheta() const;

@@ -27,7 +27,6 @@
 #include "legged_state_estimator/inekf/noise_params.hpp"
 #include "legged_state_estimator/inekf/lie_group.hpp"
 #include "legged_state_estimator/inekf/observations.hpp"
-#include "legged_state_estimator/macros.hpp"
 
 
 namespace legged_state_estimator {
@@ -70,11 +69,7 @@ the default.
    */       
   InEKF(const InEKFState& state, const NoiseParams& params, const ErrorType error_type);
 
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_DESTTUCTOR(InEKF);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_COPY_CONSTRUCTOR(InEKF);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_COPY_ASSIGN_OPERATOR(InEKF);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_MOVE_CONSTRUCTOR(InEKF);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_MOVE_ASSIGN_OPERATOR(InEKF);
+  ~InEKF() = default;
 /// @}
 
 /// @name Getters

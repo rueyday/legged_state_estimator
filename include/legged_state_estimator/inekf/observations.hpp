@@ -20,22 +20,16 @@
 
 #include "Eigen/Core"
 
-#include "legged_state_estimator/macros.hpp"
-
 
 namespace legged_state_estimator {
 
 // Simple class to hold general observations 
-class Observation {
+struct Observation {
 public:
   Observation(Eigen::VectorXd& Y, Eigen::VectorXd& b, Eigen::MatrixXd& H, 
               Eigen::MatrixXd& N, Eigen::MatrixXd& PI);
 
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_DESTTUCTOR(Observation);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_COPY_CONSTRUCTOR(Observation);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_COPY_ASSIGN_OPERATOR(Observation);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_MOVE_CONSTRUCTOR(Observation);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_MOVE_ASSIGN_OPERATOR(Observation);
+  ~Observation() = default;
 
   bool empty();
 
@@ -51,7 +45,7 @@ public:
 };
 
 
-class Kinematics {
+struct Kinematics {
 public:
   Kinematics(const int id_in, const Eigen::Matrix4d& pose_in, 
              const Eigen::Matrix<double,6,6>& covariance_in) 
@@ -64,11 +58,7 @@ public:
         setContactPosition(position_in);
   }
 
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_DESTTUCTOR(Kinematics);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_COPY_CONSTRUCTOR(Kinematics);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_COPY_ASSIGN_OPERATOR(Kinematics);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_MOVE_CONSTRUCTOR(Kinematics);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_MOVE_ASSIGN_OPERATOR(Kinematics);
+  ~Kinematics() = default;
 
   void setContactPosition(const Eigen::Vector3d& position_in) {
       pose.template block<3,1>(0,3) = position_in;
@@ -90,17 +80,13 @@ public:
 };
 
 
-class Landmark {
+struct Landmark {
 public:
   Landmark(const int id_in, const Eigen::Vector3d& position_in, 
             const Eigen::Matrix3d& covariance_in) 
     : id(id_in), position(position_in), covariance(covariance_in) { }
 
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_DESTTUCTOR(Landmark);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_COPY_CONSTRUCTOR(Landmark);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_COPY_ASSIGN_OPERATOR(Landmark);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_MOVE_CONSTRUCTOR(Landmark);
-  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_MOVE_ASSIGN_OPERATOR(Landmark);
+  ~Landmark() = default;
 
   int id;
   Eigen::Vector3d position;
