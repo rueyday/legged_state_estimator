@@ -1,5 +1,5 @@
-#ifndef INEKF_LOW_PASS_FILTER_HPP_
-#define INEKF_LOW_PASS_FILTER_HPP_
+#ifndef LEGGED_STATE_ESTIMATOR_LOW_PASS_FILTER_HPP_
+#define LEGGED_STATE_ESTIMATOR_LOW_PASS_FILTER_HPP_
 
 #include <cmath>
 #include <stdexcept>
@@ -7,10 +7,10 @@
 
 #include "Eigen/Core"
 
-#include "inekf/macros.hpp"
+#include "legged_state_estimator/macros.hpp"
 
 
-namespace inekf {
+namespace legged_state_estimator {
 
 template <typename Scalar, int dim=Eigen::Dynamic>
 class LowPassFilter {
@@ -52,11 +52,11 @@ public:
       alpha_(0.0) {
   }
 
-  INEKF_USE_DEFAULT_DESTTUCTOR(LowPassFilter);
-  INEKF_USE_DEFAULT_COPY_CONSTRUCTOR(LowPassFilter);
-  INEKF_USE_DEFAULT_COPY_ASSIGN_OPERATOR(LowPassFilter);
-  INEKF_USE_DEFAULT_MOVE_CONSTRUCTOR(LowPassFilter);
-  INEKF_USE_DEFAULT_MOVE_ASSIGN_OPERATOR(LowPassFilter);
+  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_DESTTUCTOR(LowPassFilter);
+  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_COPY_CONSTRUCTOR(LowPassFilter);
+  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_COPY_ASSIGN_OPERATOR(LowPassFilter);
+  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_MOVE_CONSTRUCTOR(LowPassFilter);
+  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_MOVE_ASSIGN_OPERATOR(LowPassFilter);
 
   void reset() {
     estimate_.setZero();
@@ -82,6 +82,6 @@ private:
   Scalar alpha_;
 };
 
-} // namespace inekf 
+} // namespace legged_state_estimator 
 
-#endif // INEKF_LOW_PASS_FILTER_HPP_ 
+#endif // LEGGED_STATE_ESTIMATOR_LOW_PASS_FILTER_HPP_ 

@@ -1,4 +1,4 @@
-# inekf
+# legged_state_estimator
 This repository contains a C++ library that implements an invariant extended Kalman filter (InEKF) for 3D aided inertial navigation. 
 
 [![InEKF LiDAR Mapping](https://i.imgur.com/BwtIepo.jpg)](https://www.youtube.com/watch?v=pNyXsZ5zVZk)
@@ -34,8 +34,12 @@ make
 ``` 
 invariant-ekf can be easily included in your cmake project by adding the following to your CMakeLists.txt:
 ```
-find_package(inekf) 
-include_directories(${inekf_INCLUDE_DIRS})
+find_package(legged_state_estimator) 
+target_link_libraries(
+  YOUR_AWESOME_LIB
+  PRIVATE
+  legged_state_estimator::legged_state_estimator
+)
 ```
 
 ## Examples

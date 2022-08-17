@@ -1,5 +1,5 @@
-#ifndef INEKF_CONTACT_ESTIMATOR_HPP_
-#define INEKF_CONTACT_ESTIMATOR_HPP_
+#ifndef LEGGED_STATE_ESTIMATOR_CONTACT_ESTIMATOR_HPP_
+#define LEGGED_STATE_ESTIMATOR_CONTACT_ESTIMATOR_HPP_
 
 #include <vector>
 #include <utility>
@@ -10,21 +10,17 @@
 #include "Eigen/Core"
 #include "Eigen/StdVector"
 
-#include "inekf/macros.hpp"
-#include "inekf/robot_model.hpp"
-#include "inekf/schmitt_trigger.hpp"
+#include "legged_state_estimator/macros.hpp"
+#include "legged_state_estimator/robot_model.hpp"
 
 
-namespace inekf {
+namespace legged_state_estimator {
 
 struct ContactEstimatorSettings {
   std::vector<double> beta0;
   std::vector<double> beta1;
   std::vector<double> force_sensor_bias;
   double contact_force_cov_alpha;
-  SchmittTriggerSettings schmitt_trigger_settings;
-
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 };
 
 
@@ -35,11 +31,11 @@ public:
 
   ContactEstimator();
 
-  INEKF_USE_DEFAULT_DESTTUCTOR(ContactEstimator);
-  INEKF_USE_DEFAULT_COPY_CONSTRUCTOR(ContactEstimator);
-  INEKF_USE_DEFAULT_COPY_ASSIGN_OPERATOR(ContactEstimator);
-  INEKF_USE_DEFAULT_MOVE_CONSTRUCTOR(ContactEstimator);
-  INEKF_USE_DEFAULT_MOVE_ASSIGN_OPERATOR(ContactEstimator);
+  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_DESTTUCTOR(ContactEstimator);
+  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_COPY_CONSTRUCTOR(ContactEstimator);
+  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_COPY_ASSIGN_OPERATOR(ContactEstimator);
+  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_MOVE_CONSTRUCTOR(ContactEstimator);
+  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_MOVE_ASSIGN_OPERATOR(ContactEstimator);
 
   void reset();
 
@@ -76,10 +72,9 @@ private:
   std::vector<double> contact_force_normal_estimate_, 
                       contact_force_normal_estimate_prev_, 
                       contact_probability_, contact_covariance_;
-  std::vector<SchmittTrigger> schmitt_trigger_;
   int num_contacts_;
 };
 
-} // namespace inekf
+} // namespace legged_state_estimator
 
-#endif // INEKF_CONTACT_ESTIMATOR_HPP_ 
+#endif // LEGGED_STATE_ESTIMATOR_CONTACT_ESTIMATOR_HPP_ 

@@ -1,9 +1,9 @@
-#include "inekf/state_estimator.hpp"
+#include "legged_state_estimator/legged_state_estimator.hpp"
 
 
-namespace inekf {
+namespace legged_state_estimator {
 
-StateEstimator::StateEstimator(const StateEstimatorSettings& settings)
+LeggedStateEstimator::LeggedStateEstimator(const LeggedStateEstimatorSettings& settings)
   : settings_(settings),
     inekf_(settings.noise_params),
     leg_kinematics_(),
@@ -34,7 +34,7 @@ StateEstimator::StateEstimator(const StateEstimatorSettings& settings)
 }
 
 
-StateEstimator::StateEstimator() 
+LeggedStateEstimator::LeggedStateEstimator() 
   : settings_(),
     inekf_(),
     leg_kinematics_(),
@@ -56,15 +56,15 @@ StateEstimator::StateEstimator()
 }
 
 
-StateEstimator::~StateEstimator() {}
+LeggedStateEstimator::~LeggedStateEstimator() {}
 
 
-void StateEstimator::init(const Eigen::Vector3d& base_pos,
-                          const Eigen::Vector4d& base_quat,
-                          const Eigen::Vector3d& base_lin_vel_world,
-                          const Eigen::Vector3d& imu_gyro_bias,
-                          const Eigen::Vector3d& imu_lin_accel_bias) {
-  RobotState initial_state;
+void LeggedStateEstimator::init(const Eigen::Vector3d& base_pos,
+                                const Eigen::Vector4d& base_quat,
+                                const Eigen::Vector3d& base_lin_vel_world,
+                                const Eigen::Vector3d& imu_gyro_bias,
+                                const Eigen::Vector3d& imu_lin_accel_bias) {
+  InEKFState initial_state;
   initial_state.setPosition(base_pos);
   initial_state.setRotation(Eigen::Quaterniond(base_quat).toRotationMatrix());
   initial_state.setVelocity(base_lin_vel_world);
@@ -74,13 +74,13 @@ void StateEstimator::init(const Eigen::Vector3d& base_pos,
 }
 
 
-void StateEstimator::init(const Eigen::Vector3d& base_pos,
-                          const Eigen::Vector4d& base_quat,
-                          const Eigen::VectorXd& qJ, 
-                          const std::vector<double>& ground_height,
-                          const Eigen::Vector3d& base_lin_vel_world,
-                          const Eigen::Vector3d& imu_gyro_bias,
-                          const Eigen::Vector3d& imu_lin_accel_bias) {
+void LeggedStateEstimator::init(const Eigen::Vector3d& base_pos,
+                                const Eigen::Vector4d& base_quat,
+                                const Eigen::VectorXd& qJ, 
+                                const std::vector<double>& ground_height,
+                                const Eigen::Vector3d& base_lin_vel_world,
+                                const Eigen::Vector3d& imu_gyro_bias,
+                                const Eigen::Vector3d& imu_lin_accel_bias) {
   robot_model_.updateKinematics(Eigen::Vector3d::Zero(), base_quat, qJ);
   double base_height = 0;
   for (int i=0; i<robot_model_.numContacts(); ++i) {
@@ -96,12 +96,12 @@ void StateEstimator::init(const Eigen::Vector3d& base_pos,
 }
 
 
-void StateEstimator::update(const Eigen::Vector3d& imu_gyro_raw, 
-                            const Eigen::Vector3d& imu_lin_accel_raw, 
-                            const Eigen::VectorXd& qJ, 
-                            const Eigen::VectorXd& dqJ, 
-                            const Eigen::VectorXd& tauJ, 
-                            const std::vector<double>& f_raw) {
+void LeggedStateEstimator::update(const Eigen::Vector3d& imu_gyro_raw, 
+                                  const Eigen::Vector3d& imu_lin_accel_raw, 
+                                  const Eigen::VectorXd& qJ, 
+                                  const Eigen::VectorXd& dqJ, 
+                                  const Eigen::VectorXd& tauJ, 
+                                  const std::vector<double>& f_raw) {
   // Process IMU measurements in InEKF
   imu_raw_.template head<3>() = imu_gyro_raw;
   imu_raw_.template tail<3>() = imu_lin_accel_raw;
@@ -151,82 +151,82 @@ void StateEstimator::update(const Eigen::Vector3d& imu_gyro_raw,
 
 
 const Eigen::Block<const Eigen::MatrixXd, 3, 1> 
-StateEstimator::getBasePositionEstimate() const {
+LeggedStateEstimator::getBasePositionEstimate() const {
   return inekf_.getState().getPosition();
 }
 
 
 const Eigen::Block<const Eigen::MatrixXd, 3, 3> 
-StateEstimator::getBaseRotationEstimate() const {
+LeggedStateEstimator::getBaseRotationEstimate() const {
   return inekf_.getState().getRotation();
 }
 
 
-const Eigen::Vector4d& StateEstimator::getBaseQuaternionEstimate() const {
+const Eigen::Vector4d& LeggedStateEstimator::getBaseQuaternionEstimate() const {
   return quat_;
 }
 
 
 const Eigen::Block<const Eigen::MatrixXd, 3, 1> 
-StateEstimator::getBaseLinearVelocityEstimateWorld() const {
+LeggedStateEstimator::getBaseLinearVelocityEstimateWorld() const {
   return inekf_.getState().getVelocity();
 }
 
 
-const Eigen::Vector3d StateEstimator::getBaseLinearVelocityEstimateLocal() const {
+const Eigen::Vector3d LeggedStateEstimator::getBaseLinearVelocityEstimateLocal() const {
   return getBaseRotationEstimate().transpose() * getBaseLinearVelocityEstimateWorld();
 }
 
 
-const Eigen::Vector3d& StateEstimator::getBaseAngularVelocityEstimateWorld() const {
+const Eigen::Vector3d& LeggedStateEstimator::getBaseAngularVelocityEstimateWorld() const {
   return imu_gyro_raw_world_;
 }
 
 
-Eigen::Vector3d StateEstimator::getBaseAngularVelocityEstimateLocal() const {
+Eigen::Vector3d LeggedStateEstimator::getBaseAngularVelocityEstimateLocal() const {
   return (imu_raw_.template head<3>() - getIMUGyroBiasEstimate());
 }
 
 
 const Eigen::VectorBlock<const Eigen::VectorXd, 3> 
-StateEstimator::getIMUGyroBiasEstimate() const {
+LeggedStateEstimator::getIMUGyroBiasEstimate() const {
   return inekf_.getState().getGyroscopeBias();
 }
 
 
 const Eigen::VectorBlock<const Eigen::VectorXd, 3> 
-StateEstimator::getIMULinearAccelerationBiasEstimate() const {
+LeggedStateEstimator::getIMULinearAccelerationBiasEstimate() const {
   return inekf_.getState().getAccelerometerBias();
 }
 
 
-const Eigen::VectorXd& StateEstimator::getJointVelocityEstimate() const {
+const Eigen::VectorXd& LeggedStateEstimator::getJointVelocityEstimate() const {
   return lpf_dqJ_.getEstimate();
 }
 
 
-const Eigen::VectorXd& StateEstimator::getJointAccelerationEstimate() const {
+const Eigen::VectorXd& LeggedStateEstimator::getJointAccelerationEstimate() const {
   return lpf_ddqJ_.getEstimate();
 }
 
 
-const Eigen::VectorXd& StateEstimator::getJointTorqueEstimate() const {
+const Eigen::VectorXd& LeggedStateEstimator::getJointTorqueEstimate() const {
   return lpf_tauJ_.getEstimate();
 }
 
 
-const std::vector<Eigen::Vector3d>& StateEstimator::getContactForceEstimate() const {
+const std::vector<Eigen::Vector3d>& LeggedStateEstimator::getContactForceEstimate() const {
   return contact_estimator_.getContactForceEstimate();
 }
 
 
-const std::vector<double>& StateEstimator::getContactProbability() const {
+const std::vector<double>& LeggedStateEstimator::getContactProbability() const {
   return contact_estimator_.getContactProbability();
 }
 
 
-const StateEstimatorSettings& StateEstimator::getSettings() const {
+const LeggedStateEstimatorSettings& LeggedStateEstimator::getSettings() const {
   return settings_;
 }
 
-} // namespace inekf
+} // namespace legged_state_estimator

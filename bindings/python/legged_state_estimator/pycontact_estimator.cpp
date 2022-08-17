@@ -3,22 +3,21 @@
 #include <pybind11/eigen.h>
 #include <pybind11/numpy.h>
 
-#include "inekf/contact_estimator.hpp"
+#include "legged_state_estimator/contact_estimator.hpp"
 
 
-namespace inekf {
+namespace legged_state_estimator {
 namespace python {
 
 namespace py = pybind11;
 
-PYBIND11_MODULE(contact_estimator, m) {
+PYBIND11_MODULE(pycontact_estimator, m) {
   py::class_<ContactEstimatorSettings>(m, "ContactEstimatorSettings")
     .def(py::init<>())
     .def_readwrite("beta0", &ContactEstimatorSettings::beta0)
     .def_readwrite("beta1", &ContactEstimatorSettings::beta1)
     .def_readwrite("force_sensor_bias", &ContactEstimatorSettings::force_sensor_bias)
-    .def_readwrite("contact_force_cov_alpha", &ContactEstimatorSettings::contact_force_cov_alpha)
-    .def_readwrite("schmitt_trigger_settings", &ContactEstimatorSettings::schmitt_trigger_settings);
+    .def_readwrite("contact_force_cov_alpha", &ContactEstimatorSettings::contact_force_cov_alpha);
 
   py::class_<ContactEstimator>(m, "ContactEstimator")
     .def(py::init<const RobotModel&, const ContactEstimatorSettings&>(),
@@ -41,4 +40,4 @@ PYBIND11_MODULE(contact_estimator, m) {
 }
 
 } // namespace python
-} // namespace inekf
+} // namespace legged_state_estimator

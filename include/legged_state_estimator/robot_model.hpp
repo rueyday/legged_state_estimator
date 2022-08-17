@@ -1,5 +1,5 @@
-#ifndef INEKF_ROBOT_MODEL_HPP_
-#define INEKF_ROBOT_MODEL_HPP_
+#ifndef LEGGED_STATE_ESTIMATOR_ROBOT_MODEL_HPP_
+#define LEGGED_STATE_ESTIMATOR_ROBOT_MODEL_HPP_
 
 #include <string>
 #include <vector>
@@ -16,10 +16,10 @@
 #include "pinocchio/algorithm/frames-derivatives.hpp"
 #include "pinocchio/algorithm/rnea.hpp"
 
-#include "inekf/macros.hpp"
+#include "legged_state_estimator/macros.hpp"
 
 
-namespace inekf {
+namespace legged_state_estimator {
 
 ///
 /// @class RobotModel
@@ -75,11 +75,11 @@ public:
   ///
   RobotModel();
 
-  INEKF_USE_DEFAULT_DESTTUCTOR(RobotModel);
-  INEKF_USE_DEFAULT_COPY_CONSTRUCTOR(RobotModel);
-  INEKF_USE_DEFAULT_COPY_ASSIGN_OPERATOR(RobotModel);
-  INEKF_USE_DEFAULT_MOVE_CONSTRUCTOR(RobotModel);
-  INEKF_USE_DEFAULT_MOVE_ASSIGN_OPERATOR(RobotModel);
+  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_DESTTUCTOR(RobotModel);
+  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_COPY_CONSTRUCTOR(RobotModel);
+  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_COPY_ASSIGN_OPERATOR(RobotModel);
+  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_MOVE_CONSTRUCTOR(RobotModel);
+  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_MOVE_ASSIGN_OPERATOR(RobotModel);
 
   ///
   /// @brief Updates leg kinemarics.
@@ -250,6 +250,6 @@ private:
 
 };
 
-} // namespace inekf
+} // namespace legged_state_estimator
 
-#endif // INEKF_ROBOT_MODEL_HPP_
+#endif // LEGGED_STATE_ESTIMATOR_ROBOT_MODEL_HPP_

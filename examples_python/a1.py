@@ -1,6 +1,6 @@
 import a1_simulator
 import numpy as np
-import inekf 
+import legged_state_estimator
 from scipy.spatial.transform import Rotation
 import matplotlib.pyplot as plt
 
@@ -12,9 +12,9 @@ sim = a1_simulator.A1Simulator(PATH_TO_URDF, TIME_STEP,
                                imu_gyro_bias_noise=0.00001,
                                imu_lin_accel_bias_noise=0.0001,
                                qJ_noise=0.001, dqJ_noise=0.1, 
-                               ddqJ_noise=1.0, tauJ_noise=0.1)
+                               tauJ_noise=0.1)
 
-estimator_settings = inekf.StateEstimatorSettings.UnitreeA1(PATH_TO_URDF, TIME_STEP)
+estimator_settings = legged_state_estimator.LeggedStateEstimatorSettings.UnitreeA1(PATH_TO_URDF, TIME_STEP)
 estimator_settings.contact_estimator_settings.beta0 = [-20.0, -20.0, -20.0, -20.0]
 estimator_settings.contact_estimator_settings.beta1 = [0.7, 0.7, 0.7, 0.7]
 estimator_settings.contact_estimator_settings.contact_force_cov_alpha = 10.0
@@ -26,7 +26,7 @@ estimator_settings.lpf_lin_accel_cutoff  = 250
 estimator_settings.lpf_dqJ_cutoff  = 10
 estimator_settings.lpf_ddqJ_cutoff = 5
 estimator_settings.lpf_tauJ_cutoff = 10
-estimator = inekf.StateEstimator(estimator_settings)
+estimator = legged_state_estimator.LeggedStateEstimator(estimator_settings)
 
 sim.init()
 for i in range(200):

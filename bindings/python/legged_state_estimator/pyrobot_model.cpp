@@ -3,15 +3,15 @@
 #include <pybind11/eigen.h>
 #include <pybind11/numpy.h>
 
-#include "inekf/robot_model.hpp"
+#include "legged_state_estimator/robot_model.hpp"
 
 
-namespace inekf {
+namespace legged_state_estimator {
 namespace python {
 
 namespace py = pybind11;
 
-PYBIND11_MODULE(robot_model, m) {
+PYBIND11_MODULE(pyrobot_model, m) {
   py::enum_<pinocchio::ReferenceFrame>(m, "ReferenceFrame")
     .value("WORLD", pinocchio::ReferenceFrame::WORLD)
     .value("LOCAL", pinocchio::ReferenceFrame::LOCAL)
@@ -72,4 +72,4 @@ PYBIND11_MODULE(robot_model, m) {
 }
 
 } // namespace python
-} // namespace inekf
+} // namespace legged_state_estimator

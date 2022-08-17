@@ -11,8 +11,8 @@
  *  @date   December 03, 2018
  **/
 
-#ifndef INEKF_OBSERVATIONS_HPP_
-#define INEKF_OBSERVATIONS_HPP_
+#ifndef LEGGED_STATE_ESTIMATOR_OBSERVATIONS_HPP_
+#define LEGGED_STATE_ESTIMATOR_OBSERVATIONS_HPP_
 
 #include <iostream>
 #include <vector>
@@ -20,10 +20,10 @@
 
 #include "Eigen/Core"
 
-#include "inekf/macros.hpp"
+#include "legged_state_estimator/macros.hpp"
 
 
-namespace inekf {
+namespace legged_state_estimator {
 
 // Simple class to hold general observations 
 class Observation {
@@ -31,11 +31,11 @@ public:
   Observation(Eigen::VectorXd& Y, Eigen::VectorXd& b, Eigen::MatrixXd& H, 
               Eigen::MatrixXd& N, Eigen::MatrixXd& PI);
 
-  INEKF_USE_DEFAULT_DESTTUCTOR(Observation);
-  INEKF_USE_DEFAULT_COPY_CONSTRUCTOR(Observation);
-  INEKF_USE_DEFAULT_COPY_ASSIGN_OPERATOR(Observation);
-  INEKF_USE_DEFAULT_MOVE_CONSTRUCTOR(Observation);
-  INEKF_USE_DEFAULT_MOVE_ASSIGN_OPERATOR(Observation);
+  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_DESTTUCTOR(Observation);
+  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_COPY_CONSTRUCTOR(Observation);
+  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_COPY_ASSIGN_OPERATOR(Observation);
+  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_MOVE_CONSTRUCTOR(Observation);
+  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_MOVE_ASSIGN_OPERATOR(Observation);
 
   bool empty();
 
@@ -64,11 +64,11 @@ public:
         setContactPosition(position_in);
   }
 
-  INEKF_USE_DEFAULT_DESTTUCTOR(Kinematics);
-  INEKF_USE_DEFAULT_COPY_CONSTRUCTOR(Kinematics);
-  INEKF_USE_DEFAULT_COPY_ASSIGN_OPERATOR(Kinematics);
-  INEKF_USE_DEFAULT_MOVE_CONSTRUCTOR(Kinematics);
-  INEKF_USE_DEFAULT_MOVE_ASSIGN_OPERATOR(Kinematics);
+  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_DESTTUCTOR(Kinematics);
+  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_COPY_CONSTRUCTOR(Kinematics);
+  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_COPY_ASSIGN_OPERATOR(Kinematics);
+  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_MOVE_CONSTRUCTOR(Kinematics);
+  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_MOVE_ASSIGN_OPERATOR(Kinematics);
 
   void setContactPosition(const Eigen::Vector3d& position_in) {
       pose.template block<3,1>(0,3) = position_in;
@@ -96,11 +96,11 @@ public:
             const Eigen::Matrix3d& covariance_in) 
     : id(id_in), position(position_in), covariance(covariance_in) { }
 
-  INEKF_USE_DEFAULT_DESTTUCTOR(Landmark);
-  INEKF_USE_DEFAULT_COPY_CONSTRUCTOR(Landmark);
-  INEKF_USE_DEFAULT_COPY_ASSIGN_OPERATOR(Landmark);
-  INEKF_USE_DEFAULT_MOVE_CONSTRUCTOR(Landmark);
-  INEKF_USE_DEFAULT_MOVE_ASSIGN_OPERATOR(Landmark);
+  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_DESTTUCTOR(Landmark);
+  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_COPY_CONSTRUCTOR(Landmark);
+  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_COPY_ASSIGN_OPERATOR(Landmark);
+  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_MOVE_CONSTRUCTOR(Landmark);
+  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_MOVE_ASSIGN_OPERATOR(Landmark);
 
   int id;
   Eigen::Vector3d position;
@@ -121,6 +121,6 @@ using vectorKinematicsIterator = std::vector<Kinematics, Eigen::aligned_allocato
 using vectorLandmarks = std::vector<Landmark, Eigen::aligned_allocator<Landmark>>;
 using vectorLandmarksIterator = std::vector<Landmark, Eigen::aligned_allocator<Landmark>>::const_iterator;
 
-} // namespace inekf 
+} // namespace legged_state_estimator 
 
-#endif // INEKF_OBSERVATIONS_HPP_
+#endif // LEGGED_STATE_ESTIMATOR_OBSERVATIONS_HPP_

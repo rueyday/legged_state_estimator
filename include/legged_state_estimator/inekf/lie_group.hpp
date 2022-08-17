@@ -11,14 +11,14 @@
  *  @date   September 25, 2018
  **/
 
-#ifndef INEKF_LIEGROUP_HPP_
-#define INEKF_LIEGROUP_HPP_
+#ifndef LEGGED_STATE_ESTIMATOR_LIEGROUP_HPP_
+#define LEGGED_STATE_ESTIMATOR_LIEGROUP_HPP_
 #include <iostream>
 #include <cmath>
 
 #include "Eigen/Core"
 
-namespace inekf {
+namespace legged_state_estimator {
 
 long int factorial(const int n);
 Eigen::Matrix3d skew(const Eigen::Vector3d& v);
@@ -31,6 +31,6 @@ Eigen::MatrixXd Exp_SEK3(const Eigen::VectorXd& v,
                          const double exp_map_tol=1.0e-10);
 Eigen::MatrixXd Adjoint_SEK3(const Eigen::MatrixXd& X);
 
-} // namespace inekf 
+} // namespace legged_state_estimator 
 
-#endif // INEKF_LIEGROUP_HPP_
+#endif // LEGGED_STATE_ESTIMATOR_LIEGROUP_HPP_

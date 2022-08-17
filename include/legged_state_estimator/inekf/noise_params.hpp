@@ -10,27 +10,27 @@
  *  @brief  Header file for Invariant EKF noise parameter class
  *  @date   September 25, 2018
  **/
-#ifndef INEKF_NOISEPARAMS_HPP_
-#define INEKF_NOISEPARAMS_HPP_
+#ifndef LEGGED_STATE_ESTIMATOR_NOISEPARAMS_HPP_
+#define LEGGED_STATE_ESTIMATOR_NOISEPARAMS_HPP_
 
 #include <iostream>
 
 #include "Eigen/Core"
 
-#include "inekf/macros.hpp"
+#include "legged_state_estimator/macros.hpp"
 
 
-namespace inekf {
+namespace legged_state_estimator {
 
 class NoiseParams {
 public:
   NoiseParams();
 
-  INEKF_USE_DEFAULT_DESTTUCTOR(NoiseParams);
-  INEKF_USE_DEFAULT_COPY_CONSTRUCTOR(NoiseParams);
-  INEKF_USE_DEFAULT_COPY_ASSIGN_OPERATOR(NoiseParams);
-  INEKF_USE_DEFAULT_MOVE_CONSTRUCTOR(NoiseParams);
-  INEKF_USE_DEFAULT_MOVE_ASSIGN_OPERATOR(NoiseParams);
+  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_DESTTUCTOR(NoiseParams);
+  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_COPY_CONSTRUCTOR(NoiseParams);
+  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_COPY_ASSIGN_OPERATOR(NoiseParams);
+  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_MOVE_CONSTRUCTOR(NoiseParams);
+  LEGGED_STATE_ESTIMATOR_USE_DEFAULT_MOVE_ASSIGN_OPERATOR(NoiseParams);
 
   void setGyroscopeNoise(const double stddev);
   void setGyroscopeNoise(const Eigen::Vector3d& stddev);
@@ -71,6 +71,6 @@ private:
   Eigen::Matrix3d Qc_;
 };
 
-} // namespace inekf 
+} // namespace legged_state_estimator 
 
-#endif // INEKF_NOISEPARAMS_HPP_
+#endif // LEGGED_STATE_ESTIMATOR_NOISEPARAMS_HPP_

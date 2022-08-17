@@ -1,7 +1,7 @@
-#include "inekf/contact_estimator.hpp"
+#include "legged_state_estimator/contact_estimator.hpp"
 
 
-namespace inekf {
+namespace legged_state_estimator {
 
 ContactEstimator::ContactEstimator(const RobotModel& robot_model,
                                    const ContactEstimatorSettings& settings)
@@ -12,8 +12,6 @@ ContactEstimator::ContactEstimator(const RobotModel& robot_model,
     contact_covariance_(robot_model.numContacts(), 0),
     contact_force_estimate_(robot_model.numContacts(), Eigen::Vector3d::Zero()),
     contact_surface_normal_(robot_model.numContacts(), Eigen::Vector3d::Zero()),
-    schmitt_trigger_(robot_model.numContacts(), 
-                     SchmittTrigger(settings.schmitt_trigger_settings)),
     num_contacts_(robot_model.numContacts()) {
   for (auto& e : contact_surface_normal_) {
     e << 0, 0, 1;
@@ -29,15 +27,11 @@ ContactEstimator::ContactEstimator()
     contact_covariance_(),
     contact_force_estimate_(),
     contact_surface_normal_(),
-    schmitt_trigger_(),
     num_contacts_(0) {
 }
 
 
 void ContactEstimator::reset() {
-  for (int i=0; i<num_contacts_; ++i) {
-    schmitt_trigger_[i].reset();
-  }
 }
 
 
@@ -66,18 +60,11 @@ void ContactEstimator::update(const RobotModel& robot_model,
     contact_covariance_[i] = settings_.contact_force_cov_alpha * df * df;
     contact_force_normal_estimate_prev_[i] = contact_force_normal_estimate_[i];
   }
-  // // TODO: Fuse the above contact force estimate with force sensor measurements.
-  // for (int i=0; i<num_contacts_; ++i) {
-  //   schmitt_trigger_[i].update(force_sensor_raw[i]);
-  // }
 }
 
 
 void ContactEstimator::setParameters(const ContactEstimatorSettings& settings) {
   settings_ = settings;
-  for (auto& e : schmitt_trigger_) {
-    e.setParameters(settings.schmitt_trigger_settings);
-  }
 }
 
 
@@ -151,4 +138,4 @@ void ContactEstimator::setForceSensorBias(
   settings_.force_sensor_bias = force_sensor_bias;
 }
 
-} // namespace inekf
+} // namespace legged_state_estimator
