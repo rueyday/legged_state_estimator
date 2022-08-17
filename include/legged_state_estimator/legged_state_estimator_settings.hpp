@@ -96,6 +96,11 @@ public:
 
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
+  /// 
+  /// @brief Creates settings for Unitree A1. 
+  /// @param[in] urdf_path Path to the URDF file.
+  /// @param[in] dt Sampling period.
+  ///
   static LeggedStateEstimatorSettings UnitreeA1(const std::string& urdf_path, 
                                                 const double dt);
 

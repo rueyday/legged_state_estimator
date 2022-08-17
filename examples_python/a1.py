@@ -26,6 +26,7 @@ estimator_settings.lpf_lin_accel_cutoff  = 250
 estimator_settings.lpf_dqJ_cutoff  = 10
 estimator_settings.lpf_ddqJ_cutoff = 5
 estimator_settings.lpf_tauJ_cutoff = 10
+estimator_settings.dynamic_contact_estimation = True
 estimator = legged_state_estimator.LeggedStateEstimator(estimator_settings)
 
 sim.init()

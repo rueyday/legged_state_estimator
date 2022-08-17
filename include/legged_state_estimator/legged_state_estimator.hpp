@@ -22,6 +22,10 @@
 
 namespace legged_state_estimator {
 
+///
+/// @class LeggedStateEstimator
+/// @brief State estimator for legged robots.
+///
 class LeggedStateEstimator {
 public:
   using Vector3d = Eigen::Matrix<double, 3, 1>;
@@ -30,10 +34,20 @@ public:
   using Matrix3d = Eigen::Matrix<double, 3, 3>;
   using Matrix6d = Eigen::Matrix<double, 6, 6>;
 
+  ///
+  /// @brief Constructor.
+  /// @param[in] settings State estimator settings.
+  ///
   LeggedStateEstimator(const LeggedStateEstimatorSettings& settings);
 
+  ///
+  /// @brief Default constructor.
+  ///
   LeggedStateEstimator();
 
+  ///
+  /// @brief Default destructor.
+  ///
   ~LeggedStateEstimator();
 
   ///

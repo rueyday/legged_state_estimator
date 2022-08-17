@@ -73,6 +73,9 @@ public:
   ///
   RobotModel();
 
+  ///
+  /// @brief Default destructor. 
+  ///
   ~RobotModel() = default;
 
   ///

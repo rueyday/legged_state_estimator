@@ -15,45 +15,114 @@
 
 namespace legged_state_estimator {
 
+///
+/// @class ContactEstimatorSettings
+/// @brief Settings of the contact estimator.
+///
 struct ContactEstimatorSettings {
+  ///
+  /// @brief A parameter of the logistic regression for the contact state (on/off).
+  ///
   std::vector<double> beta0;
+
+  ///
+  /// @brief A parameter of the logistic regression for the contact state (on/off).
+  ///
   std::vector<double> beta1;
+
+  ///
+  /// @brief A parameter in computing the contact force covariances.
+  ///
   double contact_force_cov_alpha;
+
+  ///
+  /// @brief Threshold to determine the contact state from contact probabilities.
+  ///
   double contact_prob_threshold;
 };
 
 
+///
+/// @class ContactEstimator
+/// @brief Contact estimator.
+///
 class ContactEstimator {
 public:
+  ///
+  /// @brief Constructor.
+  /// @param[in] robot_model Robot model.
+  /// @param[in] settings Contact estimator settings.
+  ///
   ContactEstimator(const RobotModel& robot_model, 
                    const ContactEstimatorSettings& settings);
 
+  ///
+  /// @brief Default constructor.
+  ///
   ContactEstimator();
 
+  ///
+  /// @brief Default destructor.
+  ///
   ~ContactEstimator() = default;
 
+  ///
+  /// @brief Resets the estimation.
+  ///
   void reset();
 
-  // M(q) a + h (q, v) = S^T u + J^T f
-
+  ///
+  /// @brief Updates the estimation.
+  /// @param[in] robot_model Robot model.
+  /// @param[in] tauJ Current joint torque.
+  ///
   void update(const RobotModel& robot_model, const Eigen::VectorXd& tauJ);
 
+  ///
+  /// @brief Set the parameters.
+  /// @param[in] settings Settings.
+  ///
   void setParameters(const ContactEstimatorSettings& settings);
 
+  ///
+  /// @brief Get the contact state, i.e., on/off of the contacts.
+  ///
   const std::vector<std::pair<int, bool>>& getContactState() const;
 
+  ///
+  /// @brief Get the contact probabilities.
+  /// @return const reference to the contact probabilities.
+  ///
   const std::vector<double>& getContactProbability() const;
 
+  ///
+  /// @brief Get the contact force covariances.
+  /// @return const reference to the contact force covariances.
+  ///
   const std::vector<double>& getContactForceCovariance() const;
 
-  // double getContactForceCovariance() const;
-
+  ///
+  /// @brief Get the contact force estimates.
+  /// @return const reference to the contact force estimates.
+  ///
   const std::vector<Eigen::Vector3d>& getContactForceEstimate() const;
 
+  ///
+  /// @brief Get the normal contact force estimates.
+  /// @return const reference to the normal contact force estimates.
+  ///
   const std::vector<double>& getNormalContactForceEstimate() const;
 
+  ///
+  /// @brief Get the contact normal surface.
+  /// @return const reference to the contact normal surface.
+  ///
   const std::vector<Eigen::Vector3d>& getContactSurfaceNormal() const;
 
+  ///
+  /// @brief Sets the contact normal surface.
+  /// @param[in] Contact Contact normal vectors.
+  ///
   void setContactSurfaceNormal(const std::vector<Eigen::Vector3d>& contact_surface_normal);
 
   void disp(std::ostream& os) const;

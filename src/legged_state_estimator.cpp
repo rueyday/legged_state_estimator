@@ -137,7 +137,6 @@ void LeggedStateEstimator::update(const Eigen::Vector3d& imu_gyro_raw,
   }
   contact_estimator_.update(robot_model_, lpf_tauJ_.getEstimate());
   inekf_.setContacts(contact_estimator_.getContactState());
-  // const double contact_force_cov = contact_estimator_.getContactForceCovariance();
   for (int i=0; i<robot_model_.numContacts(); ++i) {
     leg_kinematics_[i].setContactPosition(
         robot_model_.getContactPosition(i)-robot_model_.getBasePosition());
