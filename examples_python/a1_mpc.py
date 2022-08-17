@@ -143,6 +143,7 @@ for i in range(30000):
                         estimator.joint_velocity_estimate.copy()])
     mpc.update_solution(t, TIME_STEP, q, v)
     print('t: ', t, ',   KKT error: ', mpc.KKT_error())
+    print(estimator.get_contact_estimator())
     robot.forward_kinematics(q)
     sim.apply_torque_command(mpc.get_initial_control_input().copy())
     t = t + TIME_STEP

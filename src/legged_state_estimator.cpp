@@ -135,12 +135,13 @@ void LeggedStateEstimator::update(const Eigen::Vector3d& imu_gyro_raw,
   else {
     robot_model_.updateLegDynamics(qJ, dqJ);
   }
-  contact_estimator_.update(robot_model_, lpf_tauJ_.getEstimate(), f_raw);
+  contact_estimator_.update(robot_model_, lpf_tauJ_.getEstimate());
   inekf_.setContacts(contact_estimator_.getContactState());
-  const double contact_force_cov = contact_estimator_.getContactForceCovariance();
+  // const double contact_force_cov = contact_estimator_.getContactForceCovariance();
   for (int i=0; i<robot_model_.numContacts(); ++i) {
     leg_kinematics_[i].setContactPosition(
         robot_model_.getContactPosition(i)-robot_model_.getBasePosition());
+    const double contact_force_cov = contact_estimator_.getContactForceCovariance()[i];
     leg_kinematics_[i].setContactPositionCovariance(
         contact_force_cov*Eigen::Matrix3d::Identity());
   }
@@ -215,13 +216,8 @@ const Eigen::VectorXd& LeggedStateEstimator::getJointTorqueEstimate() const {
 }
 
 
-const std::vector<Eigen::Vector3d>& LeggedStateEstimator::getContactForceEstimate() const {
-  return contact_estimator_.getContactForceEstimate();
-}
-
-
-const std::vector<double>& LeggedStateEstimator::getContactProbability() const {
-  return contact_estimator_.getContactProbability();
+const ContactEstimator& LeggedStateEstimator::getContactEstimator() const {
+  return contact_estimator_;
 }
 
 

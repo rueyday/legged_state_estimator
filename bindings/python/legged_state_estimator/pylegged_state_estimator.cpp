@@ -53,8 +53,8 @@ PYBIND11_MODULE(pylegged_state_estimator, m) {
     .def_property_readonly("joint_velocity_estimate", &LeggedStateEstimator::getJointVelocityEstimate)
     .def_property_readonly("joint_acceleration_estimate", &LeggedStateEstimator::getJointAccelerationEstimate)
     .def_property_readonly("joint_torque_estimate", &LeggedStateEstimator::getJointTorqueEstimate)
-    .def_property_readonly("contact_force_estimate", &LeggedStateEstimator::getContactForceEstimate)
-    .def_property_readonly("contact_probability", &LeggedStateEstimator::getContactProbability);
+    .def("get_contact_estimator", &LeggedStateEstimator::getContactEstimator)
+    .def("get_settings", &LeggedStateEstimator::getSettings);
 }
 
 } // namespace python

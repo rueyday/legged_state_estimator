@@ -125,7 +125,7 @@ for i in range(10000):
     print('base_rot error:', diff)
     print('base_lin_vel error:', base_lin_vel-estimator.base_linear_velocity_estimate_local)
     print('base_ang_vel error:', base_ang_vel-estimator.base_angular_velocity_estimate_local)
-    print('contact_probability:', estimator.contact_probability)
+    print(estimator.get_contact_estimator())
 
     if len(base_pos_est) > PLT_WINDOW_SIZE:
         base_pos_true.pop(0)

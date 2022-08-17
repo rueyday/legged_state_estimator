@@ -161,14 +161,9 @@ public:
   const Eigen::VectorXd& getJointTorqueEstimate() const;
 
   ///
-  /// @return const reference to the conatct force estimates. 
+  /// @return const reference to the conatct estimator. 
   ///
-  const std::vector<Eigen::Vector3d>& getContactForceEstimate() const;
-
-  ///
-  /// @return const reference to the conatct probabilities. 
-  ///
-  const std::vector<double>& getContactProbability() const;
+  const ContactEstimator& getContactEstimator() const;
 
   ///
   /// @return const reference to the state estimator settings. 
