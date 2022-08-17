@@ -4,24 +4,24 @@
 namespace legged_state_estimator {
 
 pinocchio::Model RobotModel::buildFloatingBaseModel(
-    const std::string& path_to_urdf) {
+    const std::string& urdf_path) {
   pinocchio::Model pin_model;
-  pinocchio::urdf::buildModel(path_to_urdf, 
+  pinocchio::urdf::buildModel(urdf_path, 
                               pinocchio::JointModelFreeFlyer(), pin_model);
   return pin_model;
 }
 
 
-RobotModel::RobotModel(const std::string& path_to_urdf, const int imu_frame,
+RobotModel::RobotModel(const std::string& urdf_path, const int imu_frame,
                        const std::vector<int>& contact_frames) 
-  : RobotModel(buildFloatingBaseModel(path_to_urdf), imu_frame, contact_frames) {
+  : RobotModel(buildFloatingBaseModel(urdf_path), imu_frame, contact_frames) {
 }
 
 
-RobotModel::RobotModel(const std::string& path_to_urdf, 
+RobotModel::RobotModel(const std::string& urdf_path, 
                        const std::string& imu_frame,
                        const std::vector<std::string>& contact_frames) 
-  : RobotModel(buildFloatingBaseModel(path_to_urdf), imu_frame, contact_frames) {
+  : RobotModel(buildFloatingBaseModel(urdf_path), imu_frame, contact_frames) {
 }
 
 
@@ -67,30 +67,22 @@ RobotModel::RobotModel(const pinocchio::Model& pin_model,
   for (int i=0; i<contact_frames.size(); ++i) {
     jac_6d_.push_back(Eigen::MatrixXd::Zero(6, model_.nv));
   }
-  try {
-    if (!model_.existFrame(imu_frame)) {
-      throw std::invalid_argument(
-          "Invalid argument: frame " + imu_frame + " does not exit!");
-    }
-  }
-  catch(const std::exception& e) {
-    std::cerr << e.what() << '\n';
-    std::exit(EXIT_FAILURE);
+  if (!model_.existFrame(imu_frame)) {
+    throw std::invalid_argument(
+        "Invalid argument: IMU frame '" + imu_frame + "' does not exit!");
   }
   imu_frame_ = model_.getFrameId(imu_frame);
   contact_frames_.clear();
   for (const auto& e : contact_frames) {
-    try {
-      if (!model_.existFrame(e)) {
-        throw std::invalid_argument(
-            "Invalid argument: frame " + e + " does not exit!");
-      }
-    }
-    catch(const std::exception& e) {
-      std::cerr << e.what() << '\n';
-      std::exit(EXIT_FAILURE);
+    if (!model_.existFrame(e)) {
+      throw std::invalid_argument(
+          "Invalid argument: contact frame '" + e + "' does not exit!");
     }
     contact_frames_.push_back(model_.getFrameId(e));
+  }
+  std::cout << "imu_frame: " << imu_frame_ << std::endl;
+  for (size_t i=0; i<contact_frames_.size(); ++i) {
+    std::cout << "contact_frame: " << contact_frames_[i] << std::endl;
   }
 }
 

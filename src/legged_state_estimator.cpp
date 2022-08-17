@@ -7,7 +7,7 @@ LeggedStateEstimator::LeggedStateEstimator(const LeggedStateEstimatorSettings& s
   : settings_(settings),
     inekf_(settings.noise_params),
     leg_kinematics_(),
-    robot_model_(settings.path_to_urdf, settings.imu_frame, settings.contact_frames),
+    robot_model_(settings.urdf_path, settings.imu_frame, settings.contact_frames),
     contact_estimator_(robot_model_, settings.contact_estimator_settings),
     lpf_gyro_accel_world_(settings.dt, settings.lpf_gyro_accel_cutoff),
     lpf_lin_accel_world_(settings.dt, settings.lpf_lin_accel_cutoff),

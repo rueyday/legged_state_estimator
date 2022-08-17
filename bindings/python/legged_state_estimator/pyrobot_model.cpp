@@ -20,9 +20,9 @@ PYBIND11_MODULE(pyrobot_model, m) {
 
   py::class_<RobotModel>(m, "RobotModel")
     .def(py::init<const std::string&, const int, const std::vector<int>&>(),
-          py::arg("path_to_urdf"), py::arg("imu_frame"), py::arg("contact_frames"))
+          py::arg("urdf_path"), py::arg("imu_frame"), py::arg("contact_frames"))
     .def(py::init<const std::string&, const std::string&, const std::vector<std::string>&>(),
-          py::arg("path_to_urdf"), py::arg("imu_frame"), py::arg("contact_frames"))
+          py::arg("urdf_path"), py::arg("imu_frame"), py::arg("contact_frames"))
     .def(py::init<>())
     .def("update_leg_kinematics", static_cast<void (RobotModel::*)(const Eigen::VectorXd&, 
                                                                    const pinocchio::ReferenceFrame)>(&RobotModel::updateLegKinematics),

@@ -29,23 +29,23 @@ public:
   ///
   /// @brief Constructs a robot model. Builds the Pinocchio robot model and data 
   /// from URDF. 
-  /// @param[in] path_to_urdf Path to the URDF file.
+  /// @param[in] urdf_path Path to the URDF file.
   /// @param[in] imu_frames id of the IMU frame.
   /// @param[in] contact_frames Collection of the id of frames that can have 
   /// contacts with the environments. 
   ///
-  RobotModel(const std::string& path_to_urdf, const int imu_frame, 
+  RobotModel(const std::string& urdf_path, const int imu_frame, 
              const std::vector<int>& contact_frames);
 
   ///
   /// @brief Constructs a robot model. Builds the Pinocchio robot model and data 
   /// from URDF. 
-  /// @param[in] path_to_urdf Path to the URDF file.
+  /// @param[in] urdf_path Path to the URDF file.
   /// @param[in] imu_frames Name of the IMU frame.
   /// @param[in] contact_frames Collection of the names of frames that can have 
   /// contacts with the environments. 
   ///
-  RobotModel(const std::string& path_to_urdf, const std::string& imu_frame, 
+  RobotModel(const std::string& urdf_path, const std::string& imu_frame, 
              const std::vector<std::string>& contact_frames);
 
   ///
@@ -232,7 +232,7 @@ public:
 
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
-  static pinocchio::Model buildFloatingBaseModel(const std::string& path_to_urdf);
+  static pinocchio::Model buildFloatingBaseModel(const std::string& urdf_path);
 
 private:
   pinocchio::Model model_;

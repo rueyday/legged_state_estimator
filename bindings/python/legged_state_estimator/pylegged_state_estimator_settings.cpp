@@ -15,8 +15,9 @@ PYBIND11_MODULE(pylegged_state_estimator_settings, m) {
   py::class_<LeggedStateEstimatorSettings>(m, "LeggedStateEstimatorSettings")
     .def(py::init<>())
     .def_static("UnitreeA1", &LeggedStateEstimatorSettings::UnitreeA1,
-                 py::arg("path_to_urdf"), py::arg("dt"))
-    .def_readwrite("path_to_urdf", &LeggedStateEstimatorSettings::path_to_urdf)
+                 py::arg("urdf_path"), py::arg("dt"))
+    .def_readwrite("urdf_path", &LeggedStateEstimatorSettings::urdf_path)
+    .def_readwrite("imu_frame", &LeggedStateEstimatorSettings::imu_frame)
     .def_readwrite("contact_frames", &LeggedStateEstimatorSettings::contact_frames)
     .def_readwrite("contact_estimator_settings", &LeggedStateEstimatorSettings::contact_estimator_settings)
     .def_readwrite("noise_params", &LeggedStateEstimatorSettings::noise_params)

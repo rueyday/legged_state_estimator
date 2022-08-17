@@ -10,22 +10,26 @@
 
 namespace legged_state_estimator {
 
+///
+/// @class LeggedStateEstimatorSettings
+/// @brief Settings of the legged state estimator.
+///
 struct LeggedStateEstimatorSettings {
 public:
   /// 
   /// @brief Path to the URDF file.
   ///
-  std::string path_to_urdf;
+  std::string urdf_path;
 
   /// 
-  /// @brief id of the IMU frame.
+  /// @brief Name of the IMU frame specified in the URDF file.
   ///
-  int imu_frame;
+  std::string imu_frame;
 
   /// 
-  /// @brief ids of the contact frames.
+  /// @brief Nemes of the contact frames specified in the URDF file.
   ///
-  std::vector<int> contact_frames;
+  std::vector<std::string> contact_frames;
 
   /// 
   /// @brief Contact estimator settings. 
@@ -92,7 +96,7 @@ public:
 
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
-  static LeggedStateEstimatorSettings UnitreeA1(const std::string& path_to_urdf, 
+  static LeggedStateEstimatorSettings UnitreeA1(const std::string& urdf_path, 
                                                 const double dt);
 
 };

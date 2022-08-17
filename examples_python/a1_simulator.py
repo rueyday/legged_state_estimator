@@ -39,12 +39,12 @@ class ContactInfo(object):
 # dqJ_noise: = 0.1
 # tauJ_noise: = 0.1
 class A1Simulator:
-    def __init__(self, path_to_urdf, time_step, 
+    def __init__(self, urdf_path, time_step, 
                  imu_gyro_noise=0.01, imu_lin_accel_noise=0.1,
                  imu_gyro_bias_noise=0.00001,
                  imu_lin_accel_bias_noise=0.0001,
                  qJ_noise=0.001, dqJ_noise=0.1, tauJ_noise=0.1):
-        self.path_to_urdf = path_to_urdf
+        self.urdf_path = urdf_path
         self.time_step = time_step
         self.imu_gyro_noise = imu_gyro_noise
         self.imu_lin_accel_noise = imu_lin_accel_noise
@@ -79,8 +79,8 @@ class A1Simulator:
         self.contact_info_RF = ContactInfo(contact_name='RF', link_id=6) 
         self.contact_info_RH = ContactInfo(contact_name='RH', link_id=16) 
 
-    def set_urdf(self, path_to_urdf):
-        self.path_to_urdf = path_to_urdf
+    def set_urdf(self, urdf_path):
+        self.urdf_path = urdf_path
 
     def set_camera(self, camera_distance, camera_yaw, camera_pitch, camera_target_pos):
         self.calib_camera = True
@@ -101,7 +101,7 @@ class A1Simulator:
         pybullet.setTimeStep(self.time_step)
         pybullet.setAdditionalSearchPath(pybullet_data.getDataPath())
         self.plane = pybullet.loadURDF("plane.urdf")
-        self.robot = pybullet.loadURDF(self.path_to_urdf,  
+        self.robot = pybullet.loadURDF(self.urdf_path,  
                                        useFixedBase=False, 
                                        useMaximalCoordinates=False)
         self.init_state(self.q[0:3], self.q[3:7], self.q[7:19])
@@ -121,7 +121,7 @@ class A1Simulator:
 
     def print_joint_info(self):
         pybullet.connect(pybullet.DIRECT)
-        robot = pybullet.loadURDF(self.path_to_urdf, 
+        robot = pybullet.loadURDF(self.urdf_path, 
                                   useFixedBase=False, 
                                   useMaximalCoordinates=False)
         nJoints = pybullet.getNumJoints(robot)

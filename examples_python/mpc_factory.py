@@ -3,11 +3,11 @@ import numpy as np
 
 
 def create_robot():
-    path_to_urdf = 'a1_description/urdf/a1.urdf'
+    urdf_path = 'a1_description/urdf/a1.urdf'
     contact_frames = ['FL_foot', 'RL_foot', 'FR_foot', 'RR_foot'] 
     contact_types = [robotoc.ContactType.PointContact for i in contact_frames]
     baumgarte_time_step = 0.05
-    robot = robotoc.Robot(path_to_urdf, robotoc.BaseJointType.FloatingBase, 
+    robot = robotoc.Robot(urdf_path, robotoc.BaseJointType.FloatingBase, 
                         contact_frames, contact_types, baumgarte_time_step)
     return robot
 

@@ -4,11 +4,11 @@
 namespace legged_state_estimator {
 
 LeggedStateEstimatorSettings LeggedStateEstimatorSettings::UnitreeA1(
-    const std::string& path_to_urdf, const double dt) {
+    const std::string& urdf_path, const double dt) {
   LeggedStateEstimatorSettings settings;
-  settings.path_to_urdf = path_to_urdf;
-  settings.imu_frame = 46;
-  settings.contact_frames = {14, 24, 34, 44}; // LF, RF, LH, RH
+  settings.urdf_path = urdf_path;
+  settings.imu_frame = "imu_link";
+  settings.contact_frames = {"FL_foot", "FR_foot", "RL_foot", "RR_foot"}; 
 
   settings.contact_estimator_settings.beta0 = {-20.0, -20.0, -20.0, -20.0};
   settings.contact_estimator_settings.beta1 = {0.7, 0.7, 0.7, 0.7};

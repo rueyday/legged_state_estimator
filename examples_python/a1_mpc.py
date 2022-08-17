@@ -8,17 +8,17 @@ import mpc_factory
 
 PLOT = False
 PLOT = True
-PATH_TO_URDF = "a1_description/urdf/a1_friction.urdf"
-# PATH_TO_URDF = "a1_description/urdf/a1.urdf"
+URDF_PATH = "a1_description/urdf/a1_friction.urdf"
+# URDF_PATH = "a1_description/urdf/a1.urdf"
 TIME_STEP = 0.0025
-sim = a1_simulator.A1Simulator(PATH_TO_URDF, TIME_STEP, 
+sim = a1_simulator.A1Simulator(URDF_PATH, TIME_STEP, 
                                imu_gyro_noise=0.01, imu_lin_accel_noise=0.1,
                                imu_gyro_bias_noise=0.00001,
                                imu_lin_accel_bias_noise=0.0001,
                                qJ_noise=0.001, dqJ_noise=0.1, 
                                tauJ_noise=0.1)
 
-estimator_settings = legged_state_estimator.LeggedStateEstimatorSettings.UnitreeA1(PATH_TO_URDF, TIME_STEP)
+estimator_settings = legged_state_estimator.LeggedStateEstimatorSettings.UnitreeA1(URDF_PATH, TIME_STEP)
 estimator_settings.contact_estimator_settings.beta0 = [-20.0, -20.0, -20.0, -20.0]
 estimator_settings.contact_estimator_settings.beta1 = [0.7, 0.7, 0.7, 0.7]
 estimator_settings.contact_estimator_settings.contact_force_cov_alpha = 10.0
