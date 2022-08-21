@@ -95,12 +95,11 @@ public:
   /// @param[in] qJ Raw measurement of the joint positions. 
   /// @param[in] dqJ Raw measurement of the joint velocities. 
   /// @param[in] tauJ Raw measurement of the joint torques. 
-  /// @param[in] f_raw Raw measurement of the foot force sensor. 
   ///
   void update(const Eigen::Vector3d& imu_gyro_raw, 
               const Eigen::Vector3d& imu_lin_accel_raw, 
               const Eigen::VectorXd& qJ, const Eigen::VectorXd& dqJ, 
-              const Eigen::VectorXd& tauJ, const std::vector<double>& f_raw={});
+              const Eigen::VectorXd& tauJ);
 
   ///
   /// @return const reference to the base position estimate.

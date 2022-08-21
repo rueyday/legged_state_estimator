@@ -100,8 +100,7 @@ void LeggedStateEstimator::update(const Eigen::Vector3d& imu_gyro_raw,
                                   const Eigen::Vector3d& imu_lin_accel_raw, 
                                   const Eigen::VectorXd& qJ, 
                                   const Eigen::VectorXd& dqJ, 
-                                  const Eigen::VectorXd& tauJ, 
-                                  const std::vector<double>& f_raw) {
+                                  const Eigen::VectorXd& tauJ) {
   // Process IMU measurements in InEKF
   imu_raw_.template head<3>() = imu_gyro_raw;
   imu_raw_.template tail<3>() = imu_lin_accel_raw;

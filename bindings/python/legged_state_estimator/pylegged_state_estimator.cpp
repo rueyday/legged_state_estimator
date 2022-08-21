@@ -39,8 +39,7 @@ PYBIND11_MODULE(pylegged_state_estimator, m) {
           py::arg("imu_lin_accel_bias")=Eigen::Vector3d::Zero())
     .def("update", &LeggedStateEstimator::update,
           py::arg("imu_gyro_raw"), py::arg("imu_lin_accel_raw"), 
-          py::arg("qJ"), py::arg("dqJ"), py::arg("tauJ"), 
-          py::arg("f_raw")=std::vector<double>())
+          py::arg("qJ"), py::arg("dqJ"), py::arg("tauJ"))
     .def_property_readonly("base_position_estimate", &LeggedStateEstimator::getBasePositionEstimate)
     .def_property_readonly("base_rotation_estimate", &LeggedStateEstimator::getBaseRotationEstimate)
     .def_property_readonly("base_quaternion_estimate", &LeggedStateEstimator::getBaseQuaternionEstimate)
