@@ -1,5 +1,7 @@
 #include "legged_state_estimator/contact_estimator.hpp"
 
+#include <cmath>
+
 
 namespace legged_state_estimator {
 

@@ -3,11 +3,8 @@
 
 #include <string>
 #include <vector>
-#include <cstdio>
-#include <limits>
 
 #include "Eigen/Core"
-#include "Eigen/StdVector"
 #include "Eigen/Geometry"
 
 #include "legged_state_estimator/inekf/inekf.hpp"
