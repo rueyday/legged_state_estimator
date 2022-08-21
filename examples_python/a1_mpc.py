@@ -26,11 +26,11 @@ estimator_settings.noise_params.contact_cov = 0.01 * np.eye(3, 3)
 # estimator_settings.dynamic_contact_estimation = True
 estimator_settings.contact_position_noise = 0.1 
 estimator_settings.contact_rotation_noise = 0.1 
-estimator_settings.lpf_gyro_accel_cutoff = 250
-estimator_settings.lpf_lin_accel_cutoff  = 250
-estimator_settings.lpf_dqJ_cutoff  = 10
-estimator_settings.lpf_ddqJ_cutoff = 5
-estimator_settings.lpf_tauJ_cutoff = 10
+estimator_settings.lpf_gyro_accel_cutoff_frequency = 250
+estimator_settings.lpf_lin_accel_cutoff_frequency  = 250
+estimator_settings.lpf_dqJ_cutoff_frequency  = 10
+estimator_settings.lpf_ddqJ_cutoff_frequency = 5
+estimator_settings.lpf_tauJ_cutoff_frequency = 10
 estimator = legged_state_estimator.LeggedStateEstimator(estimator_settings)
 
 sim.init()

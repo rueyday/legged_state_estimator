@@ -69,14 +69,14 @@ RobotModel::RobotModel(const pinocchio::Model& pin_model,
   }
   if (!model_.existFrame(imu_frame)) {
     throw std::invalid_argument(
-        "Invalid argument: IMU frame '" + imu_frame + "' does not exit!");
+        "[RobotModel] invalid argument: IMU frame '" + imu_frame + "' does not exit!");
   }
   imu_frame_ = model_.getFrameId(imu_frame);
   contact_frames_.clear();
   for (const auto& e : contact_frames) {
     if (!model_.existFrame(e)) {
       throw std::invalid_argument(
-          "Invalid argument: contact frame '" + e + "' does not exit!");
+          "[RobotModel] invalid argument: contact frame '" + e + "' does not exit!");
     }
     contact_frames_.push_back(model_.getFrameId(e));
   }

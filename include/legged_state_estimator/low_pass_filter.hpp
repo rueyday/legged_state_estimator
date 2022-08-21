@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <stdexcept>
+#include <string>
 
 #include "Eigen/Core"
 
@@ -21,27 +22,27 @@ public:
   ///
   /// @brief Constructs a low pass filter.
   /// @param[in] sampling_time Sampling time.
-  /// @param[in] cutoff_freq The cut-off frequency.
+  /// @param[in] cutoff_frequency The cut-off frequency.
   /// @param[in] dynamic_size Size parameter used when the template paramter dim
   /// is set to Eigen::Dynamic.
   ///
-  LowPassFilter(const Scalar sampling_time, const Scalar cutoff_freq,
+  LowPassFilter(const Scalar sampling_time, const Scalar cutoff_frequency,
                 const int dynamic_size=0)
     : estimate_(),
       alpha_(0.0) {
     if (sampling_time <= 0) {
-      throw std::out_of_range(
-          "Invalid argment: sampling_time must be positive!");
+      throw std::invalid_argument(
+          "[LowPassFilter] invalid argment: sampling_time must be positive");
     }
-    if (cutoff_freq <= 0) {
-      throw std::out_of_range(
-          "Invalid argment: cutoff_freq must be positive!");
+    if (cutoff_frequency <= 0) {
+      throw std::invalid_argument(
+          "[LowPassFilter] invalid argment: cutoff_frequency must be positive");
     }
     if (dim == Eigen::Dynamic && dynamic_size <= 0) {
-      throw std::out_of_range(
-          "Invalid argment: dynamic_size must be positive!");
+      throw std::invalid_argument(
+          "[LowPassFilter] invalid argment: dynamic_size must be positive");
     }
-    const Scalar tau = 1.0 / (2.0*M_PI*cutoff_freq);
+    const Scalar tau = 1.0 / (2.0*M_PI*cutoff_frequency);
     alpha_ = tau / (tau + sampling_time);
     if (dim == Eigen::Dynamic) {
       estimate_.resize(dynamic_size);
@@ -79,11 +80,11 @@ public:
 
   ///
   /// @brief Updates the estimate.
-  /// @param[in] obs Observation. 
+  /// @param[in] observation Observation. 
   ///
-  void update(const Vector& obs) {
+  void update(const Vector& observation) {
     estimate_.array() *= alpha_;
-    estimate_.noalias() += (1.0-alpha_) * obs;
+    estimate_.noalias() += (1.0-alpha_) * observation;
   }
 
   ///

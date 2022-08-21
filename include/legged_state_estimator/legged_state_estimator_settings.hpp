@@ -62,47 +62,48 @@ public:
   /// 
   /// @brief Time step of estimation. 
   ///
-  double dt;
+  double sampling_time;
 
   /// 
   /// @brief Cutoff frequency of LPF for gyro sensor. 
   ///
-  double lpf_gyro_cutoff;
+  double lpf_gyro_cutoff_frequency;
 
   /// 
-  /// @brief Cutoff frequency of LPF for acceleration of gyro sensor. 
+  /// @brief Cutoff frequency of LPF for gyro acceleration that is computed by
+  /// finite difference approximation. 
   ///
-  double lpf_gyro_accel_cutoff;
+  double lpf_gyro_accel_cutoff_frequency;
 
   /// 
   /// @brief Cutoff frequency of LPF for linear acceleration measurement from IMU. 
   ///
-  double lpf_lin_accel_cutoff;
+  double lpf_lin_accel_cutoff_frequency;
 
   /// 
   /// @brief Cutoff frequency of LPF for joint velocities. 
   ///
-  double lpf_dqJ_cutoff;
+  double lpf_dqJ_cutoff_frequency;
 
   /// 
   /// @brief Cutoff frequency of LPF for joint accelerations. 
   ///
-  double lpf_ddqJ_cutoff;
+  double lpf_ddqJ_cutoff_frequency;
 
   /// 
   /// @brief Cutoff frequency of LPF for joint torques. 
   ///
-  double lpf_tauJ_cutoff;
+  double lpf_tauJ_cutoff_frequency;
 
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
   /// 
   /// @brief Creates settings for Unitree A1. 
   /// @param[in] urdf_path Path to the URDF file.
-  /// @param[in] dt Sampling period.
+  /// @param[in] sampling_time Sampling time.
   ///
   static LeggedStateEstimatorSettings UnitreeA1(const std::string& urdf_path, 
-                                                const double dt);
+                                                const double sampling_time);
 
 };
 

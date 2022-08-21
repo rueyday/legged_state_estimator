@@ -17,6 +17,14 @@ ContactEstimator::ContactEstimator(const RobotModel& robot_model,
     contact_force_covariance_(robot_model.numContacts(), 0),
     contact_state_(),
     num_contacts_(robot_model.numContacts()) {
+  if (settings.contact_prob_threshold <= 0) {
+    throw std::invalid_argument(
+        "[ContactEstimator] invalid argment: settings.contact_prob_threshold must be positive");
+  }
+  if (settings.contact_prob_threshold >= 1.0) {
+    throw std::invalid_argument(
+        "[ContactEstimator] invalid argment: settings.contact_prob_threshold must be less than 1.0");
+  }
   for (auto& e : contact_surface_normal_) {
     e << 0, 0, 1;
   }

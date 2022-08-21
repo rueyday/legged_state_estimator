@@ -4,7 +4,7 @@
 namespace legged_state_estimator {
 
 LeggedStateEstimatorSettings LeggedStateEstimatorSettings::UnitreeA1(
-    const std::string& urdf_path, const double dt) {
+    const std::string& urdf_path, const double sampling_time) {
   LeggedStateEstimatorSettings settings;
   settings.urdf_path = urdf_path;
   settings.imu_frame = "imu_link";
@@ -26,13 +26,13 @@ LeggedStateEstimatorSettings LeggedStateEstimatorSettings::UnitreeA1(
   settings.contact_position_noise = 0.01;
   settings.contact_rotation_noise = 0.01;
 
-  settings.dt = dt;
+  settings.sampling_time = sampling_time;
 
-  settings.lpf_gyro_accel_cutoff = 250;
-  settings.lpf_lin_accel_cutoff  = 250;
-  settings.lpf_dqJ_cutoff        = 10;
-  settings.lpf_ddqJ_cutoff       = 5;
-  settings.lpf_tauJ_cutoff       = 10;
+  settings.lpf_gyro_accel_cutoff_frequency = 250;
+  settings.lpf_lin_accel_cutoff_frequency  = 250;
+  settings.lpf_dqJ_cutoff_frequency        = 10;
+  settings.lpf_ddqJ_cutoff_frequency       = 5;
+  settings.lpf_tauJ_cutoff_frequency       = 10;
 
   return settings;
 }

@@ -101,13 +101,13 @@ public:
   ///
   /// @return const reference to the base position estimate.
   ///
-  const Eigen::Block<const Eigen::MatrixXd, 3, 1> getBasePositionEstimate() const;
+  const Eigen::Vector3d& getBasePositionEstimate() const;
 
   ///
   /// @return const reference to the base orientation estimate expressed by a 
   /// rotation matrix.
   ///
-  const Eigen::Block<const Eigen::MatrixXd, 3, 3> getBaseRotationEstimate() const;
+  const Eigen::Matrix3d& getBaseRotationEstimate() const;
 
   ///
   /// @return const reference to the base orientation estimate expressed by 
@@ -119,7 +119,7 @@ public:
   /// @return const reference to the base linear velocity estimate expressed in 
   /// the world frame.
   ///
-  const Eigen::Block<const Eigen::MatrixXd, 3, 1> getBaseLinearVelocityEstimateWorld() const;
+  const Eigen::Vector3d& getBaseLinearVelocityEstimateWorld() const;
 
   ///
   /// @return const reference to the base linear velocity estimate expressed in 
@@ -137,17 +137,17 @@ public:
   /// @return const reference to the base angular velocity estimate expressed in 
   /// the local frame.
   ///
-  Eigen::Vector3d getBaseAngularVelocityEstimateLocal() const;
+  const Eigen::Vector3d& getBaseAngularVelocityEstimateLocal() const;
 
   ///
   /// @return const reference to the IMU gyro bias estimate. 
   ///
-  const Eigen::VectorBlock<const Eigen::VectorXd, 3> getIMUGyroBiasEstimate() const;
+  const Eigen::Vector3d& getIMUGyroBiasEstimate() const;
 
   ///
   /// @return const reference to the IMU linear acceleration bias estimate. 
   ///
-  const Eigen::VectorBlock<const Eigen::VectorXd, 3> getIMULinearAccelerationBiasEstimate() const;
+  const Eigen::Vector3d& getIMULinearAccelerationBiasEstimate() const;
 
   ///
   /// @return const reference to the joint velocity estimates. 
@@ -185,9 +185,14 @@ private:
   LowPassFilter<double, 3> lpf_gyro_accel_world_, lpf_lin_accel_world_;
   LowPassFilter<double, Eigen::Dynamic> lpf_dqJ_, lpf_ddqJ_, lpf_tauJ_;
   Vector3d imu_gyro_raw_world_, imu_gyro_raw_world_prev_, imu_gyro_accel_world_, 
-           imu_gyro_accel_local_, imu_lin_accel_raw_world_, imu_lin_accel_local_;
+           imu_gyro_accel_local_, imu_lin_accel_raw_world_, imu_lin_accel_local_,
+           base_pos_estimate_, base_lin_vel_world_estimate_, base_lin_vel_local_estimate_,
+           base_ang_vel_world_estimate_, base_ang_vel_local_estimate_,
+           imu_gyro_bias_estimate_, imu_lin_acc_bias_estimate_;
+  Matrix3d base_rot_estimate_;
   Vector6d imu_raw_;
-  Vector4d quat_;
+  Vector4d base_quat_estimate_;
+
 };
 
 } // namespace legged_state_estimator
