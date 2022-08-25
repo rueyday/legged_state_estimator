@@ -16,8 +16,8 @@ PYBIND11_MODULE(pycontact_estimator, m) {
     .def(py::init<>())
     .def_readwrite("beta0", &ContactEstimatorSettings::beta0)
     .def_readwrite("beta1", &ContactEstimatorSettings::beta1)
-    .def_readwrite("contact_force_cov_alpha", &ContactEstimatorSettings::contact_force_cov_alpha)
-    .def_readwrite("contact_prob_threshold", &ContactEstimatorSettings::contact_prob_threshold);
+    .def_readwrite("contact_force_covariance_alpha", &ContactEstimatorSettings::contact_force_covariance_alpha)
+    .def_readwrite("contact_probability_threshold", &ContactEstimatorSettings::contact_probability_threshold);
 
   py::class_<ContactEstimator>(m, "ContactEstimator")
     .def(py::init<const RobotModel&, const ContactEstimatorSettings&>(),

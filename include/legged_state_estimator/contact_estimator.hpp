@@ -31,12 +31,12 @@ struct ContactEstimatorSettings {
   ///
   /// @brief A parameter in computing the contact force covariances.
   ///
-  double contact_force_cov_alpha;
+  double contact_force_covariance_alpha;
 
   ///
   /// @brief Threshold to determine the contact state from contact probabilities.
   ///
-  double contact_prob_threshold;
+  double contact_probability_threshold;
 };
 
 

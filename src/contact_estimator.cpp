@@ -17,13 +17,13 @@ ContactEstimator::ContactEstimator(const RobotModel& robot_model,
     contact_force_covariance_(robot_model.numContacts(), 0),
     contact_state_(),
     num_contacts_(robot_model.numContacts()) {
-  if (settings.contact_prob_threshold <= 0) {
+  if (settings.contact_probability_threshold <= 0) {
     throw std::invalid_argument(
-        "[ContactEstimator] invalid argment: settings.contact_prob_threshold must be positive");
+        "[ContactEstimator] invalid argment: settings.contact_probability_threshold must be positive");
   }
-  if (settings.contact_prob_threshold >= 1.0) {
+  if (settings.contact_probability_threshold >= 1.0) {
     throw std::invalid_argument(
-        "[ContactEstimator] invalid argment: settings.contact_prob_threshold must be less than 1.0");
+        "[ContactEstimator] invalid argment: settings.contact_probability_threshold must be less than 1.0");
   }
   for (auto& e : contact_surface_normal_) {
     e << 0, 0, 1;
@@ -74,7 +74,7 @@ void ContactEstimator::update(const RobotModel& robot_model,
   // Contact covariance
   for (int i=0; i<num_contacts_; ++i) {
     const double df = normal_contact_force_estimate_[i] - normal_contact_force_estimate_prev_[i];
-    contact_force_covariance_[i] = settings_.contact_force_cov_alpha * df * df;
+    contact_force_covariance_[i] = settings_.contact_force_covariance_alpha * df * df;
     contact_force_estimate_prev_[i] = contact_force_estimate_[i];
     normal_contact_force_estimate_prev_[i] = normal_contact_force_estimate_[i];
   }
@@ -82,7 +82,7 @@ void ContactEstimator::update(const RobotModel& robot_model,
   contact_state_.clear();
   for (int i=0; i<num_contacts_; ++i) {
     contact_state_.push_back(
-        std::pair<int, bool>(i, (contact_probability_[i] >= settings_.contact_prob_threshold)));
+        std::pair<int, bool>(i, (contact_probability_[i] >= settings_.contact_probability_threshold)));
   }
 }
 

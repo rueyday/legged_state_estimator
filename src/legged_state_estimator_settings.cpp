@@ -12,8 +12,8 @@ LeggedStateEstimatorSettings LeggedStateEstimatorSettings::UnitreeA1(
 
   settings.contact_estimator_settings.beta0 = {-20.0, -20.0, -20.0, -20.0};
   settings.contact_estimator_settings.beta1 = {0.7, 0.7, 0.7, 0.7};
-  settings.contact_estimator_settings.contact_force_cov_alpha = 100.0;
-  settings.contact_estimator_settings.contact_prob_threshold = 0.5;
+  settings.contact_estimator_settings.contact_force_covariance_alpha = 100.0;
+  settings.contact_estimator_settings.contact_probability_threshold = 0.5;
 
   settings.noise_params.setGyroscopeNoise(0.01);
   settings.noise_params.setAccelerometerNoise(0.1);
