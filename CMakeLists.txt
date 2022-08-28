@@ -103,6 +103,7 @@ if (BUILD_EXAMPLES)
   legged_state_estimator_add_test(correction_speed)
   legged_state_estimator_add_test(large_state_speed)
   legged_state_estimator_add_test(left_vs_right_error_dynamics)
+  legged_state_estimator_add_test(legged_state_estimation)
 endif()
 
 macro(legged_state_estimator_add_example EXACUTABLE)

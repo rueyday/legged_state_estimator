@@ -85,10 +85,6 @@ RobotModel::RobotModel(const pinocchio::Model& pin_model,
     }
     contact_frames_.push_back(model_.getFrameId(e));
   }
-  std::cout << "imu_frame: " << imu_frame_ << std::endl;
-  for (size_t i=0; i<contact_frames_.size(); ++i) {
-    std::cout << "contact_frame: " << contact_frames_[i] << std::endl;
-  }
 }
 
 
