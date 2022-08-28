@@ -78,6 +78,11 @@ public:
   ///
   ~RobotModel() = default;
 
+  RobotModel(const RobotModel&) = default;
+  RobotModel& operator=(const RobotModel&) = default;
+  RobotModel(RobotModel&&) noexcept = default;
+  RobotModel& operator=(RobotModel&&) noexcept = default;
+
   ///
   /// @brief Updates leg kinemarics.
   /// @param[in] qJ Joint positions. Size must be RobotModel::nJ().

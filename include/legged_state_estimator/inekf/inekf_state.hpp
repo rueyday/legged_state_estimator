@@ -32,6 +32,11 @@ public:
 
   ~InEKFState() = default;
 
+  InEKFState(const InEKFState&) = default;
+  InEKFState& operator=(const InEKFState&) = default;
+  InEKFState(InEKFState&&) noexcept = default;
+  InEKFState& operator=(InEKFState&&) noexcept = default;
+
   const Eigen::MatrixXd& getX() const;
   const Eigen::VectorXd& getTheta() const;
   const Eigen::MatrixXd& getP() const;

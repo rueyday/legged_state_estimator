@@ -47,6 +47,11 @@ public:
   ///
   ~LeggedStateEstimator();
 
+  LeggedStateEstimator(const LeggedStateEstimator&) = default;
+  LeggedStateEstimator& operator=(const LeggedStateEstimator&) = default;
+  LeggedStateEstimator(LeggedStateEstimator&&) noexcept = default;
+  LeggedStateEstimator& operator=(LeggedStateEstimator&&) noexcept = default;
+
   ///
   /// @brief Initializes the state estimator.
   /// @param[in] base_pos Base position. 

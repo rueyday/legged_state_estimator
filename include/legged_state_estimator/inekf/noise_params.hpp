@@ -26,6 +26,11 @@ public:
 
   ~NoiseParams() = default;
 
+  NoiseParams(const NoiseParams&) = default;
+  NoiseParams& operator=(const NoiseParams&) = default;
+  NoiseParams(NoiseParams&&) noexcept = default;
+  NoiseParams& operator=(NoiseParams&&) noexcept = default;
+
   void setGyroscopeNoise(const double stddev);
   void setGyroscopeNoise(const Eigen::Vector3d& stddev);
   void setGyroscopeNoise(const Eigen::Matrix3d& cov);

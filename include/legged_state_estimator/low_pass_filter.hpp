@@ -63,6 +63,11 @@ public:
   ///
   ~LowPassFilter() = default;
 
+  LowPassFilter(const LowPassFilter&) = default;
+  LowPassFilter& operator=(const LowPassFilter&) = default;
+  LowPassFilter(LowPassFilter&&) noexcept = default;
+  LowPassFilter& operator=(LowPassFilter&&) noexcept = default;
+
   ///
   /// @brief Reset the filter and reset the estimate to zero. 
   ///

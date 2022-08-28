@@ -64,6 +64,11 @@ public:
   ///
   ~ContactEstimator() = default;
 
+  ContactEstimator(const ContactEstimator&) = default;
+  ContactEstimator& operator=(const ContactEstimator&) = default;
+  ContactEstimator(ContactEstimator&&) noexcept = default;
+  ContactEstimator& operator=(ContactEstimator&&) noexcept = default;
+
   ///
   /// @brief Resets the estimation.
   ///

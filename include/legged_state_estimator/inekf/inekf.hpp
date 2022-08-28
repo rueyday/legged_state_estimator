@@ -70,6 +70,11 @@ the default.
   InEKF(const InEKFState& state, const NoiseParams& params, const ErrorType error_type);
 
   ~InEKF() = default;
+
+  InEKF(const InEKF&) = default;
+  InEKF& operator=(const InEKF&) = default;
+  InEKF(InEKF&&) noexcept = default;
+  InEKF& operator=(InEKF&&) noexcept = default;
 /// @}
 
 /// @name Getters

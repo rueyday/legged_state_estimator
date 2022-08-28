@@ -28,8 +28,14 @@ struct Observation {
 public:
   Observation(Eigen::VectorXd& Y, Eigen::VectorXd& b, Eigen::MatrixXd& H, 
               Eigen::MatrixXd& N, Eigen::MatrixXd& PI);
+  Observation() = default;
 
   ~Observation() = default;
+
+  Observation(const Observation&) = default;
+  Observation& operator=(const Observation&) = default;
+  Observation(Observation&&) noexcept = default;
+  Observation& operator=(Observation&&) noexcept = default;
 
   bool empty();
 
@@ -57,8 +63,14 @@ public:
         setContactRotation(rotation_in);
         setContactPosition(position_in);
   }
+  Kinematics() = default;
 
   ~Kinematics() = default;
+
+  Kinematics(const Kinematics&) = default;
+  Kinematics& operator=(const Kinematics&) = default;
+  Kinematics(Kinematics&&) noexcept = default;
+  Kinematics& operator=(Kinematics&&) noexcept = default;
 
   void setContactPosition(const Eigen::Vector3d& position_in) {
       pose.template block<3,1>(0,3) = position_in;
@@ -85,8 +97,14 @@ public:
   Landmark(const int id_in, const Eigen::Vector3d& position_in, 
             const Eigen::Matrix3d& covariance_in) 
     : id(id_in), position(position_in), covariance(covariance_in) { }
+  Landmark() = default;
 
   ~Landmark() = default;
+
+  Landmark(const Landmark&) = default;
+  Landmark& operator=(const Landmark&) = default;
+  Landmark(Landmark&&) noexcept = default;
+  Landmark& operator=(Landmark&&) noexcept = default;
 
   int id;
   Eigen::Vector3d position;
