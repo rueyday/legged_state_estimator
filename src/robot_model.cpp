@@ -72,6 +72,11 @@ RobotModel::RobotModel(const pinocchio::Model& pin_model,
         "[RobotModel] invalid argument: IMU frame '" + imu_frame + "' does not exit!");
   }
   imu_frame_ = model_.getFrameId(imu_frame);
+
+  if (contact_frames.size() != 4) {
+    throw std::invalid_argument(
+        "[RobotModel] invalid argment: contact_frames.size() must be 4");
+  }
   contact_frames_.clear();
   for (const auto& e : contact_frames) {
     if (!model_.existFrame(e)) {

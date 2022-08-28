@@ -17,6 +17,15 @@ ContactEstimator::ContactEstimator(const RobotModel& robot_model,
     contact_force_covariance_(robot_model.numContacts(), 0),
     contact_state_(),
     num_contacts_(robot_model.numContacts()) {
+  if (settings.beta0.size() != 4) {
+    throw std::invalid_argument(
+        "[ContactEstimator] invalid argment: settings.beta0.size() must be 4");
+  }
+  if (settings.beta1.size() != 4) {
+    throw std::invalid_argument(
+        "[ContactEstimator] invalid argment: settings.beta1.size() must be 4");
+  }
+
   if (settings.contact_probability_threshold <= 0) {
     throw std::invalid_argument(
         "[ContactEstimator] invalid argment: settings.contact_probability_threshold must be positive");
