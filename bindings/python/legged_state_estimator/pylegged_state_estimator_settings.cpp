@@ -20,7 +20,7 @@ PYBIND11_MODULE(pylegged_state_estimator_settings, m) {
     .def_readwrite("imu_frame", &LeggedStateEstimatorSettings::imu_frame)
     .def_readwrite("contact_frames", &LeggedStateEstimatorSettings::contact_frames)
     .def_readwrite("contact_estimator_settings", &LeggedStateEstimatorSettings::contact_estimator_settings)
-    .def_readwrite("noise_params", &LeggedStateEstimatorSettings::noise_params)
+    .def_readwrite("inekf_noise_params", &LeggedStateEstimatorSettings::inekf_noise_params)
     .def_readwrite("dynamic_contact_estimation", &LeggedStateEstimatorSettings::dynamic_contact_estimation)
     .def_readwrite("contact_position_noise", &LeggedStateEstimatorSettings::contact_position_noise)
     .def_readwrite("contact_rotation_noise", &LeggedStateEstimatorSettings::contact_rotation_noise)

@@ -15,11 +15,11 @@ LeggedStateEstimatorSettings LeggedStateEstimatorSettings::UnitreeA1(
   settings.contact_estimator_settings.contact_force_covariance_alpha = 100.0;
   settings.contact_estimator_settings.contact_probability_threshold = 0.5;
 
-  settings.noise_params.setGyroscopeNoise(0.01);
-  settings.noise_params.setAccelerometerNoise(0.1);
-  settings.noise_params.setGyroscopeBiasNoise(0.00001);
-  settings.noise_params.setAccelerometerBiasNoise(0.0001);
-  settings.noise_params.setContactNoise(0.1);
+  settings.inekf_noise_params.setGyroscopeNoise(0.01);
+  settings.inekf_noise_params.setAccelerometerNoise(0.1);
+  settings.inekf_noise_params.setGyroscopeBiasNoise(0.00001);
+  settings.inekf_noise_params.setAccelerometerBiasNoise(0.0001);
+  settings.inekf_noise_params.setContactNoise(0.1);
 
   settings.dynamic_contact_estimation = false;
 

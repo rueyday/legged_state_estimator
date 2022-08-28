@@ -39,7 +39,7 @@ public:
   /// 
   /// @brief Noise parameters (covariances) of InEKF. 
   ///
-  NoiseParams noise_params;
+  NoiseParams inekf_noise_params;
 
   /// 
   /// @brief Use dynamics in contact estimation. If false, equilibrium is 

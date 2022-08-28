@@ -8,7 +8,7 @@ namespace legged_state_estimator {
 
 LeggedStateEstimator::LeggedStateEstimator(const LeggedStateEstimatorSettings& settings)
   : settings_(settings),
-    inekf_(settings.noise_params),
+    inekf_(settings.inekf_noise_params),
     leg_kinematics_(),
     robot_model_(settings.urdf_path, settings.imu_frame, settings.contact_frames),
     contact_estimator_(robot_model_, settings.contact_estimator_settings),
