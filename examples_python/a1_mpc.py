@@ -1,7 +1,6 @@
 import a1_simulator
 import numpy as np
 import legged_state_estimator
-import legged_disturbance_observer
 from scipy.spatial.transform import Rotation
 import matplotlib.pyplot as plt
 import mpc_factory 
@@ -34,14 +33,6 @@ estimator_settings.lpf_dqJ_cutoff_frequency  = 10
 estimator_settings.lpf_ddqJ_cutoff_frequency = 5
 estimator_settings.lpf_tauJ_cutoff_frequency = 10
 estimator = legged_state_estimator.LeggedStateEstimator(estimator_settings)
-
-disturbance_observer_settings = legged_disturbance_observer.LeggedDisturbanceObserverSettings()
-disturbance_observer_settings.urdf_path = URDF_PATH
-disturbance_observer_settings.contact_frames = ["FL_foot", "FR_foot", "RL_foot", "RR_foot"]
-disturbance_observer_settings.sampling_time = TIME_STEP
-disturbance_observer_settings.cutoff_frequency = 40.0
-disturbance_observer = legged_disturbance_observer.LeggedDisturbanceObserver(disturbance_observer_settings)
-disturbance_observer.init()
 
 sim.init()
 sim.set_camera(2.0, 45, -10, [0, 0, 0.318]+np.array([0.1, 0.5, 0.]))
@@ -157,10 +148,6 @@ for i in range(30000):
     f_RL = f[1][0:3]
     f_FR = f[2][0:3]
     f_RR = f[3][0:3]
-    disturbance_observer.update(q, v, tauJ, [f_FL, f_FR, f_RL, f_RR])
-    robot_properties = robotoc.RobotProperties()
-    robot_properties.generalized_momentum_bias =  disturbance_observer.generalized_momentum_disturbance_estimate
-    mpc.set_robot_properties(robot_properties)
 
     mpc.update_solution(t, TIME_STEP, q, v)
     print('t: ', t, ',   KKT error: ', mpc.KKT_error())
