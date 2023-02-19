@@ -3,12 +3,16 @@ import numpy as np
 
 
 def create_robot():
-    urdf_path = 'a1_description/urdf/a1.urdf'
-    contact_frames = ['FL_foot', 'RL_foot', 'FR_foot', 'RR_foot'] 
-    contact_types = [robotoc.ContactType.PointContact for i in contact_frames]
+
+    model_info = robotoc.RobotModelInfo()
+    model_info.urdf_path = 'a1_description/urdf/a1.urdf'
+    model_info.base_joint_type = robotoc.BaseJointType.FloatingBase
     baumgarte_time_step = 0.05
-    robot = robotoc.Robot(urdf_path, robotoc.BaseJointType.FloatingBase, 
-                        contact_frames, contact_types, baumgarte_time_step)
+    model_info.point_contacts = [robotoc.ContactModelInfo('FL_foot', baumgarte_time_step),
+                                 robotoc.ContactModelInfo('RL_foot', baumgarte_time_step),
+                                 robotoc.ContactModelInfo('FR_foot', baumgarte_time_step),
+                                 robotoc.ContactModelInfo('RR_foot', baumgarte_time_step)]
+    robot = robotoc.Robot(model_info)
     return robot
 
 
@@ -36,7 +40,7 @@ def create_mpc_trot():
     T = 0.5
     N = 18
     nthreads = 4
-    mpc = robotoc.MPCTrot(robot, T, N, nthreads)
+    mpc = robotoc.MPCTrot(robot, T, N)
 
     planner = robotoc.TrotFootStepPlanner(robot)
     planner.set_gait_pattern(step_length, yaw_step, (stance_time > 0.))
@@ -79,8 +83,7 @@ def create_mpc_flying_trot():
 
     T = 0.5
     N = 18
-    nthreads = 4
-    mpc = robotoc.MPCFlyingTrot(robot, T, N, nthreads)
+    mpc = robotoc.MPCFlyingTrot(robot, T, N)
 
     planner = robotoc.FlyingTrotFootStepPlanner(robot)
     planner.set_gait_pattern(step_length, yaw_cmd)
