@@ -13,7 +13,6 @@
 
 #include "legged_state_estimator/inekf/inekf.hpp"
 
-
 namespace legged_state_estimator {
 
 using namespace std;
@@ -217,7 +216,6 @@ Eigen::MatrixXd InEKF::StateTransitionMatrix(const Eigen::Vector3d& w,
   return Phi;
 }
 
-
 // Compute Discrete noise matrix
 Eigen::MatrixXd InEKF::DiscreteNoiseMatrix(const Eigen::MatrixXd& Phi, 
                                            const double dt){
@@ -247,7 +245,6 @@ Eigen::MatrixXd InEKF::DiscreteNoiseMatrix(const Eigen::MatrixXd& Phi,
   Eigen::MatrixXd Qd = PhiG * Qc * PhiG.transpose() * dt; // Approximated discretized noise matrix (TODO: compute analytical)
   return Qd;
 }
-
 
 // InEKF Propagation - Inertial Data
 void InEKF::Propagate(const Eigen::Vector3d& imu_w, const Eigen::Vector3d& imu_a, double dt) {
@@ -305,11 +302,9 @@ void InEKF::Propagate(const Eigen::Vector3d& imu_w, const Eigen::Vector3d& imu_a
   state_.setP(P_pred);      
 }
 
-
 void InEKF::Propagate(const Eigen::Matrix<double,6,1>& imu, double dt) {
   Propagate(imu.template head<3>(), imu.template tail<3>(), dt);
 }
-
 
 // Correct State: Right-Invariant Observation
 void InEKF::CorrectRightInvariant(const Eigen::MatrixXd& Z, 
@@ -378,7 +373,6 @@ void InEKF::CorrectRightInvariant(const Eigen::MatrixXd& Z,
   // Set new covariance
   state_.setP(P_new); 
 }   
-
 
 // Correct State: Left-Invariant Observation
 void InEKF::CorrectLeftInvariant(const Eigen::MatrixXd& Z, 
@@ -565,7 +559,6 @@ void InEKF::CorrectKinematics(const vectorKinematics& measured_kinematics) {
     state_.setP(P_rem);
   }
 
-
   // Augment state with newly detected contacts
   if (new_contacts.size() > 0) {
     Eigen::MatrixXd X_aug = state_.getX(); 
@@ -611,7 +604,6 @@ void InEKF::CorrectKinematics(const vectorKinematics& measured_kinematics) {
     }
   }
 }
-
 
 // Create Observation from vector of landmark measurements
 void InEKF::CorrectLandmarks(const vectorLandmarks& measured_landmarks) {
@@ -767,7 +759,6 @@ void InEKF::CorrectLandmarks(const vectorLandmarks& measured_landmarks) {
   }
 }
 
-
 // Remove landmarks by IDs
 void InEKF::RemoveLandmarks(const int landmark_id) {
     // Search for landmark in state
@@ -797,7 +788,6 @@ void InEKF::RemoveLandmarks(const int landmark_id) {
     state_.setP(P_rem);   
   }
 }
-
 
 // Remove landmarks by IDs
 void InEKF::RemoveLandmarks(const std::vector<int>& landmark_ids) {
@@ -869,48 +859,6 @@ void InEKF::RemovePriorLandmarks(const std::vector<int>& landmark_ids) {
 
 // Corrects state using magnetometer measurements (Right Invariant)
 void InEKF::CorrectMagnetometer(const Eigen::Vector3d& measured_magnetic_field, const Eigen::Matrix3d& covariance) {
-    // Eigen::VectorXd Y, b;
-    // Eigen::MatrixXd H, N, PI;
-
-    // // Get Rotation Estimate
-    // Eigen::Matrix3d R = state_.getRotation();
-
-    // // Fill out observation data
-    // int dimX = state_.dimX();
-    // int dimTheta = state_.dimTheta();
-    // int dimP = state_.dimP();
-
-    // // Fill out Y
-    // Y.conservativeResize(dimX, Eigen::NoChange);
-    // Y.segment(0,dimX) = Eigen::VectorXd::Zero(dimX);
-    // Y.segment<3>(0) = measured_magnetic_field;
-
-    // // Fill out b
-    // b.conservativeResize(dimX, Eigen::NoChange);
-    // b.segment(0,dimX) = Eigen::VectorXd::Zero(dimX);
-    // b.segment<3>(0) = magnetic_field_;
-
-    // // Fill out H
-    // H.conservativeResize(3, dimP);
-    // H.block(0,0,3,dimP) = Eigen::MatrixXd::Zero(3,dimP);
-    // H.block<3,3>(0,0) = skew(magnetic_field_); 
-
-    // // Fill out N
-    // N.conservativeResize(3, 3);
-    // N = R * covariance * R.transpose();
-
-    // // Fill out PI      
-    // PI.conservativeResize(3, dimX);
-    // PI.block(0,0,3,dimX) = Eigen::MatrixXd::Zero(3,dimX);
-    // PI.block(0,0,3,3) = Eigen::Matrix3d::Identity();
-    
-
-    // // Correct state using stacked observation
-    // Observation obs(Y,b,H,N,PI);
-    // if (!obs.empty()) {
-    //     this->CorrectRightInvariant(obs);
-    //     // cout << obs << endl;
-    // }
 }
 
 
@@ -918,73 +866,6 @@ void InEKF::CorrectMagnetometer(const Eigen::Vector3d& measured_magnetic_field, 
 void InEKF::CorrectPosition(const Eigen::Vector3d& measured_position, 
                             const Eigen::Matrix3d& covariance, 
                             const Eigen::Vector3d& indices) {
-  // Eigen::VectorXd Y, b;
-  // Eigen::MatrixXd H, N, PI;
-
-  // // Fill out observation data
-  // int dimX = state_.dimX();
-  // int dimTheta = state_.dimTheta();
-  // int dimP = state_.dimP();
-
-  // // Fill out Y
-  // Y.conservativeResize(dimX, Eigen::NoChange);
-  // Y.segment(0,dimX) = Eigen::VectorXd::Zero(dimX);
-  // Y.segment<3>(0) = measured_position;
-  // Y(4) = 1;       
-
-  // // Fill out b
-  // b.conservativeResize(dimX, Eigen::NoChange);
-  // b.segment(0,dimX) = Eigen::VectorXd::Zero(dimX);
-  // b(4) = 1;       
-
-  // // Fill out H
-  // H.conservativeResize(3, dimP);
-  // H.block(0,0,3,dimP) = Eigen::MatrixXd::Zero(3,dimP);
-  // H.block<3,3>(0,6) = Eigen::Matrix3d::Identity(); 
-
-  // // Fill out N
-  // N.conservativeResize(3, 3);
-  // N = covariance;
-
-  // // Fill out PI      
-  // PI.conservativeResize(3, dimX);
-  // PI.block(0,0,3,dimX) = Eigen::MatrixXd::Zero(3,dimX);
-  // PI.block(0,0,3,3) = Eigen::Matrix3d::Identity();
-
-  // // Modify measurement based on chosen indices
-  // const double HIGH_UNCERTAINTY = 1e6;
-  // Eigen::Vector3d p = state_.getPosition();
-  // if (!indices(0)) { 
-  //   Y(0) = p(0);
-  //   N(0,0) = HIGH_UNCERTAINTY;
-  //   N(0,1) = 0;
-  //   N(0,2) = 0;
-  //   N(1,0) = 0;
-  //   N(2,0) = 0;
-  //   } 
-  // if (!indices(1)) { 
-  //   Y(1) = p(1);
-  //   N(1,0) = 0;
-  //   N(1,1) = HIGH_UNCERTAINTY;
-  //   N(1,2) = 0;
-  //   N(0,1) = 0;
-  //   N(2,1) = 0;
-  //   } 
-  // if (!indices(2)) { 
-  //   Y(2) = p(2);
-  //   N(2,0) = 0;
-  //   N(2,1) = 0;
-  //   N(2,2) = HIGH_UNCERTAINTY;
-  //   N(0,2) = 0;
-  //   N(1,2) = 0;
-  //   } 
-
-  // // Correct state using stacked observation
-  // Observation obs(Y,b,H,N,PI);
-  // if (!obs.empty()) {
-  //   this->CorrectLeftInvariant(obs);
-  //   // cout << obs << endl;
-  // }
 }
 
 

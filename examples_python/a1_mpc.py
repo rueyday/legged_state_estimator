@@ -1,11 +1,13 @@
 import a1_simulator
+# import sys
+# print(sys.path)
 import numpy as np
 import legged_state_estimator
 from scipy.spatial.transform import Rotation
 import matplotlib.pyplot as plt
 import mpc_factory 
 import robotoc
-
+print("debug")
 
 PLOT = False
 PLOT = True
@@ -18,13 +20,18 @@ sim = a1_simulator.A1Simulator(URDF_PATH, TIME_STEP,
                                imu_lin_accel_bias_noise=0.0001,
                                qJ_noise=0.001, dqJ_noise=0.1, 
                                tauJ_noise=0.1)
-
+print("debug1.1")
 estimator_settings = legged_state_estimator.LeggedStateEstimatorSettings.UnitreeA1(URDF_PATH, TIME_STEP)
+print("debug1.2")
 estimator_settings.contact_estimator_settings.beta0 = [-20.0, -20.0, -20.0, -20.0]
 estimator_settings.contact_estimator_settings.beta1 = [0.7, 0.7, 0.7, 0.7]
+print("debug1.2.5")
 estimator_settings.contact_estimator_settings.contact_force_covariance_alpha = 10.0
+print("debug1.2.6 ", 0.01 * np.eye(3, 3))
+
 estimator_settings.inekf_noise_params.contact_cov = 0.01 * np.eye(3, 3)
 # estimator_settings.dynamic_contact_estimation = True
+print("debug1.3")
 estimator_settings.contact_position_noise = 0.1 
 estimator_settings.contact_rotation_noise = 0.1 
 estimator_settings.lpf_gyro_accel_cutoff_frequency = 250
@@ -33,12 +40,12 @@ estimator_settings.lpf_dqJ_cutoff_frequency  = 10
 estimator_settings.lpf_ddqJ_cutoff_frequency = 5
 estimator_settings.lpf_tauJ_cutoff_frequency = 10
 estimator = legged_state_estimator.LeggedStateEstimator(estimator_settings)
-
+print("debug1")
 sim.init()
 sim.set_camera(2.0, 45, -10, [0, 0, 0.318]+np.array([0.1, 0.5, 0.]))
 for i in range(200):
     sim.step_simulation()
-
+print("debug2")
 base_pos, base_quat, base_lin_vel_world, base_ang_vel_world = sim.get_base_state(coordinate='world')
 estimator.init(base_pos=base_pos, base_quat=base_quat, base_lin_vel_world=base_lin_vel_world,
                imu_gyro_bias=np.zeros(3), imu_lin_accel_bias=np.zeros(3))

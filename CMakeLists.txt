@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(legged_state_estimator)
+find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
+
 
 if (NOT "${CMAKE_CXX_STANDARD}")
   set(CMAKE_CXX_STANDARD 11)
@@ -35,6 +37,7 @@ option(BUILD_EXAMPLES "Build examples and tests" ON)
 set(CMAKE_INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib)
 find_package(Eigen3 REQUIRED)
 find_package(pinocchio REQUIRED)
+# find_package(pinocchio REQUIRED COMPONENTS urdfdom)
 file(GLOB_RECURSE ${PROJECT_NAME}_SOURCES src/*.cpp)
 file(GLOB_RECURSE ${PROJECT_NAME}_HEADERS include/${PROJECT_NAME}/*.h*)
 add_library(
